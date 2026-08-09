@@ -1,0 +1,49 @@
+@import url('https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700;900&family=Rajdhani:wght@300;400;600;700&family=JetBrains+Mono:wght@400;500&display=swap');
+
+:root {
+  --ai: #00d4ff;
+  --hu: #ff8c42;
+  --void: #000814;
+  --gold: #ffd700;
+  --marble: #f0ede4;
+  --pur: #7b2fbe;
+  --muted: rgba(240, 237, 228, 0.5);
+  --sans: 'Rajdhani', sans-serif;
+  --mono: 'JetBrains Mono', monospace;
+
+  font: 18px/1.45 var(--sans);
+  color: var(--marble);
+  background: var(--void);
+  font-synthesis: none;
+  text-rendering: optimizeLegibility;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  scroll-behavior: auto;
+}
+
+* {
+  box-sizing: border-box;
+}
+
+html,
+body,
+#root {
+  min-height: 100%;
+}
+
+body {
+  margin: 0;
+  overflow-x: hidden;
+  background: var(--void);
+}
+
+button,
+input,
+textarea,
+select {
+  font: inherit;
+}
+
+a {
+  color: inherit;
+}
