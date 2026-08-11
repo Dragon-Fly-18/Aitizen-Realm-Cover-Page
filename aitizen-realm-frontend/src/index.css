@@ -1,13 +1,27 @@
 @import url('https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700;900&family=Rajdhani:wght@300;400;600;700&family=JetBrains+Mono:wght@400;500&display=swap');
 
 :root {
-  --ai: #00d4ff;
-  --hu: #ff8c42;
-  --void: #000814;
-  --gold: #ffd700;
-  --marble: #f0ede4;
-  --pur: #7b2fbe;
-  --muted: rgba(240, 237, 228, 0.5);
+  /* AI / Future */
+  --ai: #00D9FF;
+  /* electric cyan (glow) */
+  --pur: #0A1D32;
+  /* AI secondary deep blue */
+
+  /* Human / Present */
+  --hu: #C88A55;
+  /* warm amber (glow) */
+  --human-secondary: #2A211C;
+
+  /* Convergence / Neutral */
+  --void: #0D1118;
+  /* center convergence */
+
+  /* Title and highlights */
+  --gold: #FFB52E;
+  /* title gold */
+  --marble: #F5F5E8;
+  /* title white/ivory */
+  --muted: rgba(245, 245, 232, 0.5);
   --sans: 'Rajdhani', sans-serif;
   --mono: 'JetBrains Mono', monospace;
 
