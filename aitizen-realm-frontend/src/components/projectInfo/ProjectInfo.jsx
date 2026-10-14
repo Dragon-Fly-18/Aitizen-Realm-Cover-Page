@@ -50,7 +50,7 @@ export default function ProjectInfo() {
               </div>
               <div className="pi-spec-row">
                 <span className="pi-spec-lbl">ACADEMIC YEAR</span>
-                <span className="pi-spec-val">2025 — 2026</span>
+                <span className="pi-spec-val">2023 — 2027</span>
               </div>
               <div className="pi-spec-row">
                 <span className="pi-spec-lbl">DOMAIN</span>
@@ -73,28 +73,28 @@ export default function ProjectInfo() {
               <div className="pi-member-slot">
                 <div className="member-avatar">01</div>
                 <div className="member-info">
-                  <span className="member-name">[Team Member 1 — Add Name Later]</span>
+                  <span className="member-name">[Team Member 1 — Krithik.S]</span>
                   <span className="member-role">Core Architecture & AI Agent Framework</span>
                 </div>
               </div>
               <div className="pi-member-slot">
                 <div className="member-avatar">02</div>
                 <div className="member-info">
-                  <span className="member-name">[Team Member 2 — Add Name Later]</span>
+                  <span className="member-name">[Team Member 2 — Gowtham.G]</span>
                   <span className="member-role">Frontend 3D Interactive Pipeline & Three.js</span>
                 </div>
               </div>
               <div className="pi-member-slot">
                 <div className="member-avatar">03</div>
                 <div className="member-info">
-                  <span className="member-name">[Team Member 3 — Add Name Later]</span>
+                  <span className="member-name">[Team Member 3 — Adhi Keshavan.B]</span>
                   <span className="member-role">3D Modeling, Blender Assets & Shaders</span>
                 </div>
               </div>
               <div className="pi-member-slot">
                 <div className="member-avatar">04</div>
                 <div className="member-info">
-                  <span className="member-name">[Team Member 4 — Add Name Later]</span>
+                  <span className="member-name">[Team Member 4 — Sugandhan.B]</span>
                   <span className="member-role">Evaluation Metrics & Situational Simulations</span>
                 </div>
               </div>
