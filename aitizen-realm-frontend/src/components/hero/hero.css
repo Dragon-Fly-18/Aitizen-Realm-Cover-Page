@@ -167,15 +167,26 @@
 	opacity: 0.88;
 }
 
-.cover-nav__logoOrb {
-	width: 12px;
-	height: 12px;
-	border-radius: 999px;
-	border: 1.5px solid rgba(0, 217, 255, 0.8);
-	background: radial-gradient(circle, #00d9ff 40%, transparent 80%);
-	box-shadow: 0 0 14px rgba(0, 217, 255, 0.75);
-	display: inline-block;
-	animation: orbPulse 3s ease-in-out infinite;
+.cover-nav__logo {
+	width: 52px;
+	height: 52px;
+	flex: 0 0 52px;
+	display: grid;
+	place-items: center;
+	overflow: hidden;
+	border: 1px solid rgba(47, 108, 216, 0.45);
+	border-radius: 12px;
+	background: #000;
+	box-shadow: 0 0 20px rgba(47, 108, 216, 0.24);
+}
+
+.cover-nav__logo img {
+	width: 100%;
+	height: 100%;
+	display: block;
+	object-fit: cover;
+	transform: scale(1.65);
+	transform-origin: 50% 50%;
 }
 
 .cover-nav__title {
@@ -1017,6 +1028,8 @@
 
 @media (max-width: 480px) {
 	.cover-nav { padding: 16px; }
+	.cover-nav__logo { width: 44px; height: 44px; flex-basis: 44px; border-radius: 10px; }
+	.cover-nav__title { font-size: 0.8rem; letter-spacing: 0.16em; }
 	.cover-nav__statusTag { display: none; }
 	.cover-hero { top: 14%; }
 	.cover-hero__badge { font-size: 0.55rem; letter-spacing: 0.11em; margin-bottom: 14px; }

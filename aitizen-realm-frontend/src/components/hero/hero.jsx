@@ -664,7 +664,7 @@ export default function Hero() {
 		if (el) el.scrollIntoView({ behavior: 'smooth' })
 	}
 
-	const handleEnterRealmClick = () => {
+	const handleObserverClick = () => {
 		scrollToSection('agents')
 	}
 
@@ -709,7 +709,9 @@ export default function Hero() {
 							if (e.key === 'Enter' || e.key === ' ') scrollToSection('realm')
 						}}
 					>
-						<span className="cover-nav__logoOrb" aria-hidden="true" />
+						<span className="cover-nav__logo" aria-hidden="true">
+							<img src="/aitizen-realm-logo.png" alt="" />
+						</span>
 						<span className="cover-nav__title">AITIZEN REALM</span>
 						<span className="cover-nav__statusTag" aria-hidden="true">
 							● SYS.ONLINE
@@ -853,10 +855,11 @@ export default function Hero() {
 								<button
 									type="button"
 									className="cover-hero__btn"
-									onClick={handleEnterRealmClick}
+									onClick={handleObserverClick}
+									aria-label="Open the observer view"
 								>
 									<span className="cover-hero__btnGlow" aria-hidden="true" />
-									<span className="cover-hero__btnText">ENTER THE REALM</span>
+									<span className="cover-hero__btnText">OBSERVER</span>
 									<span className="cover-hero__btnArrow" aria-hidden="true">→</span>
 								</button>
 								<button
