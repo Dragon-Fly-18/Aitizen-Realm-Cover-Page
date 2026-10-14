@@ -16,6 +16,25 @@ function lerp(start, end, amount) {
 	return start + (end - start) * amount
 }
 
+function smoothDamp(current, target, currentVelocity, smoothTime, deltaTime) {
+	const safeSmoothTime = Math.max(0.0001, smoothTime)
+	const omega = 2 / safeSmoothTime
+	const step = omega * deltaTime
+	const decay = 1 / (1 + step + 0.48 * step * step + 0.235 * step * step * step)
+	const change = current - target
+	const temporary = (currentVelocity + omega * change) * deltaTime
+	let velocity = (currentVelocity - omega * temporary) * decay
+	let value = target + (change + temporary) * decay
+
+	const crossedTarget = (target - current > 0 && value > target) || (target - current < 0 && value < target)
+	if (crossedTarget) {
+		value = target
+		velocity = 0
+	}
+
+	return { value, velocity }
+}
+
 function easeInOutCubic(t) {
 	return t < 0.5 ? 4 * t * t * t : 1 - Math.pow(-2 * t + 2, 3) / 2
 }
@@ -408,6 +427,7 @@ function HeroScene({ containerRef, hudRefs, onReady }) {
 		// ── Scroll & Mouse Tracking ──────────────────────────────────────
 		const scrollTarget = { value: 0 }
 		const smoothedProgress = { value: 0 }
+		const scrollVelocity = { value: 0 }
 
 		const mouseTarget = { x: 0, y: 0 }
 		const smoothedMouse = { x: 0, y: 0 }
@@ -445,7 +465,7 @@ function HeroScene({ containerRef, hudRefs, onReady }) {
 		window.addEventListener('resize', resize)
 
 		// ── Animation Loop ───────────────────────────────────────────────
-		const DAMPING_LAMBDA = 8.5
+		const SCROLL_SMOOTH_TIME = 0.14
 		let lastTime = performance.now()
 		let isTabHidden = document.hidden
 		let floatIntensity = 0
@@ -459,9 +479,21 @@ function HeroScene({ containerRef, hudRefs, onReady }) {
 
 			if (isTabHidden) return
 
-			// Exponential damping for silky-smooth response
-			const alpha = prefersReducedMotion ? 1 : 1 - Math.exp(-DAMPING_LAMBDA * dt)
-			smoothedProgress.value += (scrollTarget.value - smoothedProgress.value) * alpha
+			// Critically damped scroll progress stays responsive without jitter or overshoot.
+			if (prefersReducedMotion) {
+				smoothedProgress.value = scrollTarget.value
+				scrollVelocity.value = 0
+			} else {
+				const smoothedScroll = smoothDamp(
+					smoothedProgress.value,
+					scrollTarget.value,
+					scrollVelocity.value,
+					SCROLL_SMOOTH_TIME,
+					dt,
+				)
+				smoothedProgress.value = clamp(smoothedScroll.value, 0, 1)
+				scrollVelocity.value = smoothedScroll.velocity
+			}
 
 			if (!prefersReducedMotion) {
 				smoothedMouse.x += (mouseTarget.x - smoothedMouse.x) * (1 - Math.exp(-4.5 * dt))
@@ -564,7 +596,10 @@ function HeroScene({ containerRef, hudRefs, onReady }) {
 
 		const onVisibilityChange = () => {
 			isTabHidden = document.hidden
-			if (!isTabHidden) lastTime = performance.now()
+			if (!isTabHidden) {
+				lastTime = performance.now()
+				scrollVelocity.value = 0
+			}
 		}
 		document.addEventListener('visibilitychange', onVisibilityChange)
 
