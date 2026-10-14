@@ -202,6 +202,17 @@ function HeroScene({ containerRef, hudRefs, onReady }) {
 		const container = containerRef.current
 		if (!canvas || !container) return undefined
 
+		const prefersReducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches
+		const saveDataEnabled = Boolean(navigator.connection?.saveData)
+		const useStaticScene = window.innerWidth < 640 || saveDataEnabled
+
+		// Avoid downloading almost 20 MB of 3D models on small screens or data-saver connections.
+		// The layered CSS ambience remains as a lightweight visual fallback.
+		if (useStaticScene) {
+			onReady?.()
+			return undefined
+		}
+
 		const refs = {
 			progressBar: hudRefs.progressBar,
 			coverOverlay: hudRefs.coverOverlay,
@@ -267,7 +278,7 @@ function HeroScene({ containerRef, hudRefs, onReady }) {
 		scene.add(topLight)
 
 		// Background Stars
-		const starCount = window.innerWidth < 768 ? 1400 : 2800
+		const starCount = window.innerWidth < 768 ? 700 : 1800
 		const stars = makeStars(starCount)
 		scene.add(stars)
 
@@ -439,8 +450,6 @@ function HeroScene({ containerRef, hudRefs, onReady }) {
 		let isTabHidden = document.hidden
 		let floatIntensity = 0
 
-		const prefersReducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches
-
 		const animate = (now) => {
 			if (isDestroyed) return
 			rafId = window.requestAnimationFrame(animate)
@@ -521,7 +530,7 @@ function HeroScene({ containerRef, hudRefs, onReady }) {
 			// Synaptic Data Stream between eyes during separation and face-to-face
 			const synapticAlpha = getPhase(p, 0.35, 0.65, easeInOutQuad) * (1 - getPhase(p, 0.96, 1.0, easeOutQuad))
 			synaptic.points.material.opacity = synapticAlpha * 0.9
-			if (synapticAlpha > 0.01) {
+			if (synapticAlpha > 0.01 && !prefersReducedMotion) {
 				const posAttr = synaptic.geometry.attributes.position
 				for (let i = 0; i < synaptic.count; i++) {
 					const t = (i / synaptic.count + elapsedTime * 0.35) % 1.0
@@ -548,7 +557,7 @@ function HeroScene({ containerRef, hudRefs, onReady }) {
 			camera.position.z = camZ
 			camera.lookAt(smoothedMouse.x * 0.03, 0.10, 0)
 
-			stars.rotation.y = elapsedTime * 0.012
+			if (!prefersReducedMotion) stars.rotation.y = elapsedTime * 0.012
 
 			renderer.render(scene, camera)
 		}
@@ -656,9 +665,11 @@ export default function Hero() {
 	}
 
 	const handleEnterRealmClick = () => {
-		// Scroll halfway down hero or directly to idea
-		const el = document.getElementById('idea')
-		if (el) el.scrollIntoView({ behavior: 'smooth' })
+		scrollToSection('agents')
+	}
+
+	const handleExploreClick = () => {
+		scrollToSection('how-it-works')
 	}
 
 	return (
@@ -816,32 +827,70 @@ export default function Hero() {
 
 					{/* ── CHAPTER 1: INITIAL HERO COVER ─────────────────── */}
 					<div ref={coverOverlayRef} className="cover-hero">
-						<div className="cover-hero__badge">
-							<span className="cover-hero__badgeDot" />
-							<span>FINAL YEAR PROJECT // AITIZEN REALM</span>
+						<div className="cover-hero__content">
+							<div className="cover-hero__badge">
+								<span className="cover-hero__badgeDot" />
+								<span>AUTONOMOUS CIVILIZATION SIMULATION</span>
+							</div>
+
+							<h1 className="cover-hero__title">
+								<span className="cover-hero__titleEyebrow">A CIVILIZATION THAT</span>
+								<span className="cover-hero__titleMain">LIVES, LEARNS<br />&amp; EVOLVES.</span>
+							</h1>
+
+							<p className="cover-hero__subtitle">
+								AITIZEN Realm is a living simulation where autonomous AI citizens perceive their world,
+								make decisions, manage resources, and shape settlements together.
+							</p>
+
+							<div className="cover-hero__traits" aria-label="Simulation features">
+								<span>Autonomous citizens</span>
+								<span>Shared resources</span>
+								<span>Emergent settlements</span>
+							</div>
+
+							<div className="cover-hero__actions">
+								<button
+									type="button"
+									className="cover-hero__btn"
+									onClick={handleEnterRealmClick}
+								>
+									<span className="cover-hero__btnGlow" aria-hidden="true" />
+									<span className="cover-hero__btnText">ENTER THE REALM</span>
+									<span className="cover-hero__btnArrow" aria-hidden="true">→</span>
+								</button>
+								<button
+									type="button"
+									className="cover-hero__btn cover-hero__btn--secondary"
+									onClick={handleExploreClick}
+								>
+									<span className="cover-hero__btnText">EXPLORE HOW IT WORKS</span>
+								</button>
+							</div>
 						</div>
 
-						<h1 className="cover-hero__title">
-							<span className="cover-hero__titleEyebrow">AI AGENTS IN</span>
-							<span className="cover-hero__titleMain">THE REAL WORLD.</span>
-						</h1>
-
-						<p className="cover-hero__subtitle">
-							Autonomous intelligence that learns, adapts, and acts within everyday human life.
-						</p>
-
-						<div className="cover-hero__actions">
-							<button
-								type="button"
-								className="cover-hero__btn"
-								onClick={handleEnterRealmClick}
-								aria-label="Enter the Realm"
-							>
-								<span className="cover-hero__btnGlow" aria-hidden="true" />
-								<span className="cover-hero__btnText">ENTER THE REALM</span>
-								<span className="cover-hero__btnArrow" aria-hidden="true">→</span>
-							</button>
-						</div>
+						<aside className="realm-preview" aria-label="Illustrative realm simulation preview">
+							<div className="realm-preview__header">
+								<span><i /> CONCEPT REALM VIEW</span>
+								<small>ILLUSTRATIVE</small>
+							</div>
+							<div className="realm-preview__map" aria-hidden="true">
+								<div className="realm-preview__district realm-preview__district--one"><span /></div>
+								<div className="realm-preview__district realm-preview__district--two"><span /></div>
+								<div className="realm-preview__district realm-preview__district--three"><span /></div>
+								<div className="realm-preview__route realm-preview__route--one" />
+								<div className="realm-preview__route realm-preview__route--two" />
+								<span className="realm-preview__citizen realm-preview__citizen--one" />
+								<span className="realm-preview__citizen realm-preview__citizen--two" />
+								<span className="realm-preview__citizen realm-preview__citizen--three" />
+							</div>
+							<div className="realm-preview__legend">
+								<span>CITIZEN → RESOURCE</span>
+								<span>HOME → SETTLEMENT</span>
+								<span>DECISION → MEMORY</span>
+							</div>
+							<p>See how individual choices connect citizens, resources, homes, and a growing realm.</p>
+						</aside>
 					</div>
 
 					{/* ── CHAPTER 1.5: FACE-TO-FACE ENCOUNTER BANNER ───── */}
@@ -860,9 +909,9 @@ export default function Hero() {
 						<button
 							type="button"
 							className="encounter-scroll-cue"
-							onClick={handleEnterRealmClick}
+							onClick={handleExploreClick}
 						>
-							<span>CONTINUE SCROLLING TO EXPLORE ARCHITECTURE</span>
+							<span>EXPLORE THE COGNITIVE ARCHITECTURE</span>
 							<span className="cue-arrow">↓</span>
 						</button>
 					</div>
@@ -909,11 +958,11 @@ export default function Hero() {
 						type="button"
 						ref={hintRef}
 						className="cover-page__hint"
-						onClick={handleEnterRealmClick}
+						onClick={() => scrollToSection('idea')}
 						style={{ opacity: 1 }}
 						aria-label="Scroll to discover"
 					>
-						<span className="cover-page__hintLabel">SCROLL TO ENTER</span>
+						<span className="cover-page__hintLabel">SCROLL TO DISCOVER</span>
 						<div className="cover-page__hintTrack">
 							<span className="cover-page__hintBeam" />
 						</div>

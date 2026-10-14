@@ -373,15 +373,25 @@
 /* ── CHAPTER 1: HERO OVERLAY (Positioned safely on Left) ───────────── */
 .cover-hero {
 	position: absolute;
-	top: 26%;
+	top: 19%;
 	left: clamp(24px, 5vw, 90px);
-	max-width: min(520px, 44vw);
-	display: flex;
-	flex-direction: column;
-	align-items: flex-start;
+	right: clamp(24px, 5vw, 90px);
+	display: grid;
+	grid-template-columns: minmax(0, 620px) minmax(280px, 340px);
+	align-items: center;
+	justify-content: space-between;
+	gap: clamp(40px, 7vw, 110px);
 	z-index: 20;
 	pointer-events: auto;
 	transition: opacity 0.3s ease, transform 0.3s ease;
+}
+
+.cover-hero__content {
+	display: flex;
+	flex-direction: column;
+	align-items: flex-start;
+	padding: 22px 26px 24px 0;
+	background: linear-gradient(90deg, rgba(3, 7, 17, 0.88) 0%, rgba(3, 7, 17, 0.56) 72%, transparent 100%);
 }
 
 .cover-hero__badge {
@@ -429,7 +439,7 @@
 }
 
 .cover-hero__titleMain {
-	font-size: clamp(2.4rem, 4.8vw, 4.2rem);
+	font-size: clamp(2.65rem, 4.6vw, 4.55rem);
 	font-weight: 900;
 	background: linear-gradient(135deg, #ffffff 0%, #b8e6fe 50%, #00d9ff 100%);
 	-webkit-background-clip: text;
@@ -438,18 +448,37 @@
 }
 
 .cover-hero__subtitle {
-	font-size: clamp(0.95rem, 1.2vw, 1.12rem);
+	font-size: clamp(1rem, 1.2vw, 1.12rem);
 	font-weight: 400;
 	line-height: 1.65;
 	color: rgba(210, 226, 248, 0.8);
 	margin: 0 0 32px 0;
-	max-width: 440px;
+	max-width: 570px;
+}
+
+.cover-hero__traits {
+	display: flex;
+	flex-wrap: wrap;
+	gap: 8px;
+	margin: -10px 0 28px;
+}
+
+.cover-hero__traits span {
+	padding: 6px 10px;
+	border: 1px solid rgba(255, 255, 255, 0.12);
+	border-radius: 999px;
+	background: rgba(6, 15, 30, 0.78);
+	font-family: var(--mono);
+	font-size: 0.61rem;
+	letter-spacing: 0.08em;
+	color: rgba(225, 238, 255, 0.76);
 }
 
 .cover-hero__actions {
 	display: flex;
 	align-items: center;
 	gap: 16px;
+	flex-wrap: wrap;
 }
 
 .cover-hero__btn {
@@ -471,6 +500,18 @@
 	background: rgba(0, 217, 255, 0.25);
 	box-shadow: 0 0 32px rgba(0, 217, 255, 0.5);
 	transform: translateY(-2px);
+}
+
+.cover-hero__btn--secondary {
+	background: rgba(4, 9, 20, 0.72);
+	border-color: rgba(255, 255, 255, 0.24);
+	box-shadow: none;
+}
+
+.cover-hero__btn--secondary:hover {
+	background: rgba(255, 255, 255, 0.1);
+	border-color: rgba(255, 255, 255, 0.56);
+	box-shadow: 0 0 24px rgba(143, 101, 255, 0.18);
 }
 
 .cover-hero__btnGlow {
@@ -503,6 +544,140 @@
 
 .cover-hero__btn:hover .cover-hero__btnArrow {
 	transform: translateX(4px);
+}
+
+/* ── Lightweight civilization preview ─────────────────────────────── */
+.realm-preview {
+	width: 100%;
+	padding: 18px;
+	border: 1px solid rgba(0, 217, 255, 0.28);
+	border-radius: 18px;
+	background: linear-gradient(145deg, rgba(7, 17, 35, 0.88), rgba(4, 9, 20, 0.72));
+	backdrop-filter: blur(16px);
+	box-shadow: 0 24px 70px rgba(0, 0, 0, 0.38), inset 0 1px rgba(255, 255, 255, 0.05);
+}
+
+.realm-preview__header {
+	display: flex;
+	align-items: center;
+	justify-content: space-between;
+	gap: 12px;
+	font-family: var(--mono);
+	font-size: 0.62rem;
+	letter-spacing: 0.12em;
+	color: var(--ai);
+}
+
+.realm-preview__header span {
+	display: inline-flex;
+	align-items: center;
+	gap: 7px;
+}
+
+.realm-preview__header i {
+	width: 6px;
+	height: 6px;
+	border-radius: 50%;
+	background: var(--ai);
+	box-shadow: 0 0 10px var(--ai);
+}
+
+.realm-preview__header small {
+	font-size: 0.5rem;
+	color: rgba(255, 255, 255, 0.42);
+}
+
+.realm-preview__map {
+	position: relative;
+	height: 210px;
+	margin: 15px 0;
+	overflow: hidden;
+	border: 1px solid rgba(255, 255, 255, 0.08);
+	border-radius: 12px;
+	background:
+		linear-gradient(30deg, rgba(0, 217, 255, 0.08) 12%, transparent 12.5%, transparent 87%, rgba(0, 217, 255, 0.08) 87.5%),
+		linear-gradient(150deg, rgba(0, 217, 255, 0.08) 12%, transparent 12.5%, transparent 87%, rgba(0, 217, 255, 0.08) 87.5%),
+		linear-gradient(30deg, rgba(0, 217, 255, 0.08) 12%, transparent 12.5%, transparent 87%, rgba(0, 217, 255, 0.08) 87.5%),
+		#040a16;
+	background-size: 36px 62px;
+	background-position: 0 0, 0 0, 18px 31px;
+	transform: translateZ(0);
+}
+
+.realm-preview__map::after {
+	content: '';
+	position: absolute;
+	inset: 0;
+	background: radial-gradient(circle at 50% 45%, transparent 10%, rgba(3, 7, 17, 0.52) 100%);
+	pointer-events: none;
+}
+
+.realm-preview__district {
+	position: absolute;
+	width: 58px;
+	height: 44px;
+	border: 1px solid rgba(0, 217, 255, 0.5);
+	background: linear-gradient(145deg, rgba(0, 217, 255, 0.2), rgba(79, 128, 255, 0.08));
+	transform: rotate(30deg) skewX(-30deg) scaleY(0.86);
+	box-shadow: 10px 12px 28px rgba(0, 217, 255, 0.12);
+}
+
+.realm-preview__district span {
+	position: absolute;
+	left: 15px;
+	bottom: 12px;
+	width: 24px;
+	height: 46px;
+	background: linear-gradient(180deg, rgba(156, 239, 255, 0.9), rgba(0, 111, 167, 0.36));
+	box-shadow: 0 0 18px rgba(0, 217, 255, 0.45);
+}
+
+.realm-preview__district--one { left: 40px; top: 76px; }
+.realm-preview__district--two { right: 45px; top: 45px; transform: rotate(30deg) skewX(-30deg) scaleY(0.86) scale(0.8); }
+.realm-preview__district--three { right: 78px; bottom: 24px; transform: rotate(30deg) skewX(-30deg) scaleY(0.86) scale(0.68); }
+.realm-preview__district--two span { height: 68px; }
+.realm-preview__district--three span { height: 32px; }
+
+.realm-preview__route {
+	position: absolute;
+	height: 1px;
+	background: linear-gradient(90deg, transparent, var(--cyber-violet), transparent);
+	transform-origin: left center;
+	box-shadow: 0 0 8px var(--cyber-violet);
+}
+
+.realm-preview__route--one { width: 165px; left: 72px; top: 110px; transform: rotate(-21deg); }
+.realm-preview__route--two { width: 125px; left: 91px; top: 119px; transform: rotate(20deg); }
+
+.realm-preview__citizen {
+	position: absolute;
+	width: 8px;
+	height: 8px;
+	border: 2px solid #fff;
+	border-radius: 50%;
+	background: var(--cyber-violet);
+	box-shadow: 0 0 12px var(--cyber-violet);
+	z-index: 2;
+}
+
+.realm-preview__citizen--one { left: 50%; top: 32%; }
+.realm-preview__citizen--two { left: 43%; top: 62%; }
+.realm-preview__citizen--three { left: 66%; top: 67%; }
+
+.realm-preview__legend {
+	display: grid;
+	gap: 5px;
+	font-family: var(--mono);
+	font-size: 0.53rem;
+	letter-spacing: 0.09em;
+	color: rgba(187, 217, 245, 0.58);
+}
+
+.realm-preview p {
+	margin: 13px 0 0;
+	font-size: 0.76rem;
+	line-height: 1.5;
+	color: rgba(225, 238, 255, 0.72);
 }
 
 /* ── CHAPTER 1.5: FACE-TO-FACE ENCOUNTER OVERLAY ─────────────────────── */
@@ -808,16 +983,29 @@
 		display: flex;
 	}
 	.cover-hero {
-		max-width: min(440px, 60vw);
+		top: 22%;
+		display: block;
+		right: auto;
+		max-width: min(590px, 70vw);
 	}
+	.realm-preview { display: none; }
 }
 
 @media (max-width: 768px) {
 	.cover-hero {
-		top: 18%;
+		top: 16%;
 		left: 20px;
 		max-width: calc(100vw - 40px);
 	}
+	.cover-hero__content {
+		padding: 18px 0;
+		background: linear-gradient(90deg, rgba(3, 7, 17, 0.9), rgba(3, 7, 17, 0.64) 80%, transparent);
+	}
+	.cover-hero__titleMain { font-size: clamp(2.2rem, 11vw, 3.4rem); }
+	.cover-hero__subtitle { max-width: 94%; }
+	.cover-hero__actions { gap: 10px; }
+	.cover-hero__btn { min-height: 48px; padding: 12px 18px; }
+	.cover-hero__btnText { font-size: 0.68rem; letter-spacing: 0.12em; }
 	.cover-page__panel {
 		display: none;
 	}
@@ -825,4 +1013,20 @@
 		top: 12%;
 		width: 92%;
 	}
+}
+
+@media (max-width: 480px) {
+	.cover-nav { padding: 16px; }
+	.cover-nav__statusTag { display: none; }
+	.cover-hero { top: 14%; }
+	.cover-hero__badge { font-size: 0.55rem; letter-spacing: 0.11em; margin-bottom: 14px; }
+	.cover-hero__title { margin-bottom: 14px; }
+	.cover-hero__titleEyebrow { font-size: 1rem; }
+	.cover-hero__subtitle { font-size: 0.9rem; line-height: 1.5; margin-bottom: 24px; }
+	.cover-hero__traits { display: none; }
+	.cover-hero__actions { align-items: stretch; width: 100%; }
+	.cover-hero__btn { justify-content: center; flex: 1 1 100%; }
+	.cover-page__corner--bl,
+	.cover-page__corner--br { display: none; }
+	.cover-page__hint { bottom: 12px; }
 }
