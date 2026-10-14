@@ -1,4 +1,3 @@
-import React from 'react'
 import Hero from './components/hero/hero'
 import Idea from './components/idea/Idea'
 import HowItWorks from './components/howItWorks/HowItWorks'

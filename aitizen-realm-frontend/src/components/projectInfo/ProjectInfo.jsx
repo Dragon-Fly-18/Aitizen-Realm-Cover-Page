@@ -1,4 +1,3 @@
-import React from 'react'
 import './ProjectInfo.css'
 
 const TECH_STACK = [
