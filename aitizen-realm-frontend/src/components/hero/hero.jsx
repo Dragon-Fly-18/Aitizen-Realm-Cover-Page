@@ -7,7 +7,7 @@ import './hero.css'
 const AI_GLB = '/models/ai/Meshy_AI_Futuristic_humanoid_t_0808114600_texture.glb'
 const HUMAN_GLB = '/models/humans/Meshy_AI_Classical_marble_scul_0808115614_texture.glb'
 
-// ── Math & Easing Utilities ──────────────────────────────────────────────────
+// ── Math & Easing Utilities ──────────────────────────────────────────
 function clamp(value, min, max) {
 	return Math.min(max, Math.max(min, value))
 }
@@ -91,7 +91,6 @@ function applyClippingAndMaterial(model, clipPlane, isAI = false) {
 
 		// Create Cybernetic Neural Points & Wireframe Overlay for the AI model
 		if (isAI && child.geometry) {
-			// 1. Subtle glowing wireframe
 			const wireMat = new THREE.MeshBasicMaterial({
 				color: 0x00d9ff,
 				wireframe: true,
@@ -108,7 +107,6 @@ function applyClippingAndMaterial(model, clipPlane, isAI = false) {
 			child.add(wireMesh)
 			wireframes.push(wireMesh)
 
-			// 2. Glowing Neural Constellation Points
 			const pointsMat = new THREE.PointsMaterial({
 				color: 0x66e5ff,
 				size: 0.042,
@@ -130,7 +128,7 @@ function applyClippingAndMaterial(model, clipPlane, isAI = false) {
 	return { wireframes, pointClouds }
 }
 
-function makeStars(count = 3400) {
+function makeStars(count = 3000) {
 	const geometry = new THREE.BufferGeometry()
 	const positions = new Float32Array(count * 3)
 	const colors = new Float32Array(count * 3)
@@ -142,17 +140,14 @@ function makeStars(count = 3400) {
 
 		const r = Math.random()
 		if (r < 0.42) {
-			// Cyan / AI particle
 			colors[i * 3] = 0.0
 			colors[i * 3 + 1] = 0.88
 			colors[i * 3 + 2] = 1.0
 		} else if (r < 0.72) {
-			// Violet / Ethereal particle
 			colors[i * 3] = 0.58
 			colors[i * 3 + 1] = 0.42
 			colors[i * 3 + 2] = 1.0
 		} else {
-			// Soft white star
 			colors[i * 3] = 0.88
 			colors[i * 3 + 1] = 0.94
 			colors[i * 3 + 2] = 1.0
@@ -168,8 +163,7 @@ function makeStars(count = 3400) {
 	)
 }
 
-// Synaptic Data Stream linking AI and Human across space
-function createSynapticStream(count = 160) {
+function createSynapticStream(count = 180) {
 	const geometry = new THREE.BufferGeometry()
 	const positions = new Float32Array(count * 3)
 	const colors = new Float32Array(count * 3)
@@ -199,13 +193,23 @@ function createSynapticStream(count = 160) {
 	return { points, geometry, count }
 }
 
-// ── HeroScene Component ──────────────────────────────────────────────────────
-function HeroScene({ hudRefs, onReady, onScrollProgress }) {
+// ── HeroScene Component ──────────────────────────────────────────────
+function HeroScene({ containerRef, hudRefs, onReady }) {
 	const canvasRef = useRef(null)
 
 	useEffect(() => {
 		const canvas = canvasRef.current
-		if (!canvas) return undefined
+		const container = containerRef.current
+		if (!canvas || !container) return undefined
+
+		const refs = {
+			progressBar: hudRefs.progressBar,
+			coverOverlay: hudRefs.coverOverlay,
+			encounterOverlay: hudRefs.encounterOverlay,
+			panelLeft: hudRefs.panelLeft,
+			panelRight: hudRefs.panelRight,
+			hint: hudRefs.hint,
+		}
 
 		let rafId = null
 		let isDestroyed = false
@@ -215,8 +219,8 @@ function HeroScene({ hudRefs, onReady, onScrollProgress }) {
 		scene.fog = new THREE.FogExp2(0x030711, 0.030)
 
 		const camera = new THREE.PerspectiveCamera(45, window.innerWidth / window.innerHeight, 0.1, 90)
-		camera.position.set(0, 0.22, 5.0)
-		camera.lookAt(0, 0.12, 0)
+		camera.position.set(0, 0.18, 5.0)
+		camera.lookAt(0, 0.10, 0)
 
 		const renderer = new THREE.WebGLRenderer({
 			canvas,
@@ -242,7 +246,7 @@ function HeroScene({ hudRefs, onReady, onScrollProgress }) {
 		aiLight.position.set(-3.0, 2.5, 3.2)
 		scene.add(aiLight)
 
-		const huLight = new THREE.PointLight(0xffb066, 17, 15)
+		const huLight = new THREE.PointLight(0xd7e5ff, 17, 15)
 		huLight.position.set(3.0, 2.5, 3.2)
 		scene.add(huLight)
 
@@ -254,7 +258,7 @@ function HeroScene({ hudRefs, onReady, onScrollProgress }) {
 		aiRim.position.set(-4.5, 0.5, -2.0)
 		scene.add(aiRim)
 
-		const huRim = new THREE.PointLight(0xff7722, 11, 11)
+		const huRim = new THREE.PointLight(0x9db7df, 11, 11)
 		huRim.position.set(4.5, 0.5, -2.0)
 		scene.add(huRim)
 
@@ -263,7 +267,8 @@ function HeroScene({ hudRefs, onReady, onScrollProgress }) {
 		scene.add(topLight)
 
 		// Background Stars
-		const stars = makeStars()
+		const starCount = window.innerWidth < 768 ? 1400 : 2800
+		const stars = makeStars(starCount)
 		scene.add(stars)
 
 		// Floor Digital Grid
@@ -287,7 +292,7 @@ function HeroScene({ hudRefs, onReady, onScrollProgress }) {
 		scene.add(seamMesh)
 
 		// Synaptic Stream
-		const synaptic = createSynapticStream(160)
+		const synaptic = createSynapticStream(180)
 		scene.add(synaptic.points)
 
 		// AI on Left (x <= 0), Human on Right (x >= 0)
@@ -337,92 +342,59 @@ function HeroScene({ hudRefs, onReady, onScrollProgress }) {
 			(err) => console.error('Human GLB load error:', err),
 		)
 
-		// ── Direct HUD Synchronizer (Zero React Re-renders during Scroll) ─────
+		// ── Direct HUD Synchronizer ──────────────────────────────────────
 		const updateHUD = (progress) => {
-			if (!hudRefs) return
+			// Hero Cover Title (0% -> 22%)
+			const heroCoverOpacity = clamp(1 - getPhase(progress, 0.05, 0.22, easeInOutQuad), 0, 1)
+			const heroCoverTranslateY = lerp(0, -28, getPhase(progress, 0.03, 0.22, easeOutQuad))
 
-			// 1. Chapter 1: Initial Cover Page Hero (0% -> 22%)
-			const heroCoverOpacity = clamp(1 - getPhase(progress, 0.04, 0.22, easeInOutQuad), 0, 1)
-			const heroCoverTranslateY = lerp(0, -32, getPhase(progress, 0.02, 0.22, easeOutQuad))
+			// Scroll Hint
+			const hintOpacity = clamp(1 - getPhase(progress, 0.02, 0.12, easeOutQuad), 0, 1)
 
-			// 2. Scroll Hint (Fades out quickly upon initial scroll)
-			const hintOpacity = clamp(1 - getPhase(progress, 0.01, 0.09, easeOutQuad), 0, 1)
-
-			// 3. Side HUD Indicators (Visible during Separation & Dialogue in Chapter 2)
+			// Side HUD Indicators (Visible during Separation in middle phase)
 			const sideOpacity = clamp(
-				getPhase(progress, 0.16, 0.28, easeInOutQuad) * (1 - getPhase(progress, 0.46, 0.54, easeInOutQuad)),
+				getPhase(progress, 0.22, 0.36, easeInOutQuad) * (1 - getPhase(progress, 0.70, 0.82, easeInOutQuad)),
 				0,
 				1,
 			)
 
-			// 4. Chapter 2: The Convergence / Idea (Visible ~26% -> 54%)
-			const ideaIn = getPhase(progress, 0.24, 0.38, easeInOutCubic)
-			const ideaOut = 1 - getPhase(progress, 0.50, 0.58, easeInOutCubic)
-			const ideaOpacity = clamp(ideaIn * ideaOut, 0, 1)
-			const ideaTranslateY = lerp(32, 0, ideaIn) - lerp(0, 24, getPhase(progress, 0.50, 0.58, easeInOutQuad))
-
-			// 5. Chapter 3: The Architecture / Experience (Visible ~56% -> 82%)
-			const expIn = getPhase(progress, 0.58, 0.68, easeInOutCubic)
-			const expOut = 1 - getPhase(progress, 0.80, 0.86, easeInOutCubic)
-			const expOpacity = clamp(expIn * expOut, 0, 1)
-			const expTranslateY = lerp(32, 0, expIn) - lerp(0, 24, getPhase(progress, 0.80, 0.86, easeInOutQuad))
-
-			// 6. Chapter 4: The Manifesto / About (Visible ~84% -> 100%)
-			const aboutIn = getPhase(progress, 0.84, 0.94, easeInOutCubic)
-			const aboutOpacity = clamp(aboutIn, 0, 1)
-			const aboutTranslateY = lerp(32, 0, aboutIn)
+			// Face-to-Face Encounter Banner (0.80 -> 1.00)
+			const encounterOpacity = clamp(getPhase(progress, 0.80, 0.95, easeInOutCubic), 0, 1)
+			const encounterTranslateY = lerp(24, 0, getPhase(progress, 0.80, 0.95, easeOutCubic))
 
 			// Progress bar
-			if (hudRefs.progressBar?.current) {
-				hudRefs.progressBar.current.style.width = `${progress * 100}%`
+			if (refs.progressBar?.current) {
+				refs.progressBar.current.style.width = `${progress * 100}%`
 			}
 
-			// Chapter 1 Hero
-			if (hudRefs.coverOverlay?.current) {
-				hudRefs.coverOverlay.current.style.opacity = heroCoverOpacity
-				hudRefs.coverOverlay.current.style.transform = `translate(-50%, calc(-50% + ${heroCoverTranslateY}px))`
-				hudRefs.coverOverlay.current.style.pointerEvents = heroCoverOpacity > 0.3 ? 'auto' : 'none'
+			// Hero Cover Text
+			if (refs.coverOverlay?.current) {
+				refs.coverOverlay.current.style.opacity = heroCoverOpacity
+				refs.coverOverlay.current.style.transform = `translateY(${heroCoverTranslateY}px)`
+				refs.coverOverlay.current.style.pointerEvents = heroCoverOpacity > 0.25 ? 'auto' : 'none'
+			}
+
+			// Encounter Text
+			if (refs.encounterOverlay?.current) {
+				refs.encounterOverlay.current.style.opacity = encounterOpacity
+				refs.encounterOverlay.current.style.transform = `translate(-50%, ${encounterTranslateY}px)`
+				refs.encounterOverlay.current.style.pointerEvents = encounterOpacity > 0.4 ? 'auto' : 'none'
 			}
 
 			// Side Panels
-			if (hudRefs.panelLeft?.current) {
-				hudRefs.panelLeft.current.style.opacity = sideOpacity
-			}
-			if (hudRefs.panelRight?.current) {
-				hudRefs.panelRight.current.style.opacity = sideOpacity
-			}
+			if (refs.panelLeft?.current) refs.panelLeft.current.style.opacity = sideOpacity
+			if (refs.panelRight?.current) refs.panelRight.current.style.opacity = sideOpacity
 
 			// Scroll Hint
-			if (hudRefs.hint?.current) {
-				hudRefs.hint.current.style.opacity = hintOpacity
-				hudRefs.hint.current.style.pointerEvents = hintOpacity > 0.2 ? 'auto' : 'none'
-			}
-
-			// Chapter 2: Idea
-			if (hudRefs.chapterIdea?.current) {
-				hudRefs.chapterIdea.current.style.opacity = ideaOpacity
-				hudRefs.chapterIdea.current.style.transform = `translate(-50%, calc(-50% + ${ideaTranslateY}px))`
-				hudRefs.chapterIdea.current.style.pointerEvents = ideaOpacity > 0.4 ? 'auto' : 'none'
-			}
-
-			// Chapter 3: Experience
-			if (hudRefs.chapterExperience?.current) {
-				hudRefs.chapterExperience.current.style.opacity = expOpacity
-				hudRefs.chapterExperience.current.style.transform = `translate(-50%, calc(-50% + ${expTranslateY}px))`
-				hudRefs.chapterExperience.current.style.pointerEvents = expOpacity > 0.4 ? 'auto' : 'none'
-			}
-
-			// Chapter 4: About
-			if (hudRefs.chapterAbout?.current) {
-				hudRefs.chapterAbout.current.style.opacity = aboutOpacity
-				hudRefs.chapterAbout.current.style.transform = `translate(-50%, calc(-50% + ${aboutTranslateY}px))`
-				hudRefs.chapterAbout.current.style.pointerEvents = aboutOpacity > 0.4 ? 'auto' : 'none'
+			if (refs.hint?.current) {
+				refs.hint.current.style.opacity = hintOpacity
+				refs.hint.current.style.pointerEvents = hintOpacity > 0.2 ? 'auto' : 'none'
 			}
 		}
 
 		updateHUD(0)
 
-		// ── Scroll & Mouse Tracking ──────────────────────────────────────────
+		// ── Scroll & Mouse Tracking ──────────────────────────────────────
 		const scrollTarget = { value: 0 }
 		const smoothedProgress = { value: 0 }
 
@@ -430,9 +402,15 @@ function HeroScene({ hudRefs, onReady, onScrollProgress }) {
 		const smoothedMouse = { x: 0, y: 0 }
 
 		const updateScrollTarget = () => {
-			const maxScroll = Math.max(document.body.scrollHeight - window.innerHeight, 1)
-			scrollTarget.value = clamp(window.scrollY / maxScroll, 0, 1)
+			const rect = container.getBoundingClientRect()
+			const totalScrollable = container.offsetHeight - window.innerHeight
+			if (totalScrollable <= 0) {
+				scrollTarget.value = 0
+				return
+			}
+			scrollTarget.value = clamp(-rect.top / totalScrollable, 0, 1)
 		}
+
 		updateScrollTarget()
 		window.addEventListener('scroll', updateScrollTarget, { passive: true })
 
@@ -442,27 +420,24 @@ function HeroScene({ hudRefs, onReady, onScrollProgress }) {
 		}
 		window.addEventListener('mousemove', onMouseMove, { passive: true })
 
-		// Dynamic Aspect Ratio & Viewport Responsive Sizing
 		let vpWidth = window.innerWidth
 		let vpHeight = window.innerHeight
 
 		const resize = () => {
 			vpWidth = canvas.clientWidth || window.innerWidth
 			vpHeight = canvas.clientHeight || window.innerHeight
-			const aspect = vpWidth / vpHeight
-			camera.aspect = aspect
+			camera.aspect = vpWidth / vpHeight
 			camera.updateProjectionMatrix()
 			renderer.setSize(vpWidth, vpHeight, false)
+			updateScrollTarget()
 		}
 		window.addEventListener('resize', resize)
-		window.addEventListener('resize', updateScrollTarget)
 
-		// ── Cinematic Animation Engine ────────────────────────────────────────
-		const DAMPING_LAMBDA = 8.0
+		// ── Animation Loop ───────────────────────────────────────────────
+		const DAMPING_LAMBDA = 8.5
 		let lastTime = performance.now()
 		let isTabHidden = document.hidden
 		let floatIntensity = 0
-		let lastReportedProgress = -1
 
 		const prefersReducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches
 
@@ -475,11 +450,10 @@ function HeroScene({ hudRefs, onReady, onScrollProgress }) {
 
 			if (isTabHidden) return
 
-			// Smooth exponential progress damping
+			// Exponential damping for silky-smooth response
 			const alpha = prefersReducedMotion ? 1 : 1 - Math.exp(-DAMPING_LAMBDA * dt)
 			smoothedProgress.value += (scrollTarget.value - smoothedProgress.value) * alpha
 
-			// Smooth mouse damping
 			if (!prefersReducedMotion) {
 				smoothedMouse.x += (mouseTarget.x - smoothedMouse.x) * (1 - Math.exp(-4.5 * dt))
 				smoothedMouse.y += (mouseTarget.y - smoothedMouse.y) * (1 - Math.exp(-4.5 * dt))
@@ -491,19 +465,13 @@ function HeroScene({ hudRefs, onReady, onScrollProgress }) {
 			const p = smoothedProgress.value
 			updateHUD(p)
 
-			// Throttled notification for active nav highlighting
-			if (Math.abs(p - lastReportedProgress) > 0.02 && onScrollProgress) {
-				lastReportedProgress = p
-				onScrollProgress(p)
-			}
+			// ── Multi-Phase Timeline (0% -> 20% -> 40% -> 60% -> 80% -> 100%) ──
+			const separation = getPhase(p, 0.18, 0.45, easeInOutCubic)
+			const unclipPhase = getPhase(p, 0.22, 0.40, easeInOutQuad)
+			const rotatePhase = getPhase(p, 0.40, 0.88, easeInOutCubic)
+			const settlePhase = getPhase(p, 0.85, 1.00, easeOutCubic)
 
-			// ── Multi-Phase Timeline ─────────────────────────────────────────
-			const separation = getPhase(p, 0.14, 0.42, easeInOutCubic)
-			const unclipPhase = getPhase(p, 0.25, 0.58, easeInOutQuad)
-			const rotatePhase = getPhase(p, 0.42, 0.90, easeInOutCubic)
-			const settlePhase = getPhase(p, 0.86, 1.00, easeOutCubic)
-
-			// Idle floating & breathing
+			// Idle floating
 			const scrollDelta = Math.abs(scrollTarget.value - p)
 			if (scrollDelta < 0.001 && separation > 0.01 && !prefersReducedMotion) {
 				floatIntensity = lerp(floatIntensity, 1.0, dt * 2.0)
@@ -511,87 +479,83 @@ function HeroScene({ hudRefs, onReady, onScrollProgress }) {
 				floatIntensity = lerp(floatIntensity, 0.0, dt * 8.0)
 			}
 			const elapsedTime = now / 1000
-			const floatY = Math.sin(elapsedTime * 1.2) * 0.022 * floatIntensity
+			const floatY = Math.sin(elapsedTime * 1.2) * 0.02 * floatIntensity
 
-			// Adaptive mobile separation distance
+			// Adaptive separation distance
 			const isMobile = vpWidth < 768
 			const isTablet = vpWidth >= 768 && vpWidth < 1024
-			const maxSepX = isMobile ? 1.45 : isTablet ? 2.05 : 2.65
-			const finalSepOffset = isMobile ? 0.15 : 0.25
+			const maxSepX = isMobile ? 1.45 : isTablet ? 2.05 : 2.55
+			const finalSepOffset = isMobile ? 0.15 : 0.22
 
-			// Model X Positions
 			const baseAiX = lerp(0, -maxSepX, separation)
 			const finalAiX = lerp(baseAiX, -(maxSepX - finalSepOffset), settlePhase)
 			const baseHuX = lerp(0, maxSepX, separation)
 			const finalHuX = lerp(baseHuX, maxSepX - finalSepOffset, settlePhase)
 
-			aiGroup.position.set(finalAiX, -0.20 + floatY, 0)
-			huGroup.position.set(finalHuX, -0.20 - floatY, 0)
+			aiGroup.position.set(finalAiX, -0.18 + floatY, 0)
+			huGroup.position.set(finalHuX, -0.18 - floatY, 0)
 
-			// Model Y Rotations: Facing each other across space
-			const targetAiRot = 1.48
-			const targetHuRot = -1.48
+			// Model Y Rotations: Face-to-face confrontation
+			const targetAiRot = 1.46
+			const targetHuRot = -1.46
 			aiGroup.rotation.y = lerp(0, targetAiRot, rotatePhase)
 			huGroup.rotation.y = lerp(0, targetHuRot, rotatePhase)
 
-			// Subtle mouse parallax on models
+			// Mouse parallax on models
 			if (!prefersReducedMotion) {
-				aiGroup.rotation.x = smoothedMouse.y * 0.07
-				huGroup.rotation.x = smoothedMouse.y * 0.07
-				aiGroup.position.y += smoothedMouse.y * -0.04
-				huGroup.position.y += smoothedMouse.y * -0.04
+				aiGroup.rotation.x = smoothedMouse.y * 0.06
+				huGroup.rotation.x = smoothedMouse.y * 0.06
+				aiGroup.position.y += smoothedMouse.y * -0.03
+				huGroup.position.y += smoothedMouse.y * -0.03
 			}
 
-			// Clipping Planes
-			const clipConst = lerp(0.012, 25.0, unclipPhase)
+			// Clipping Planes: Push plane constant away once separation starts
+			const clipConst = lerp(0.012, 50.0, unclipPhase)
 			aiClipPlane.constant = clipConst
 			huClipPlane.constant = clipConst
 
 			// Seam visual indicator
 			seamMesh.scale.y = lerp(1, 0, separation)
-			seamMat.opacity = clamp(0.95 * (1 - separation * 2.5), 0, 0.95)
+			seamMat.opacity = clamp(0.95 * (1 - separation * 3.0), 0, 0.95)
 
-			// Synaptic Data Stream between heads during separation and rotation
-			const synapticAlpha = getPhase(p, 0.30, 0.65, easeInOutQuad) * (1 - getPhase(p, 0.88, 1.0, easeOutQuad))
-			synaptic.points.material.opacity = synapticAlpha * 0.88
+			// Synaptic Data Stream between eyes during separation and face-to-face
+			const synapticAlpha = getPhase(p, 0.35, 0.65, easeInOutQuad) * (1 - getPhase(p, 0.96, 1.0, easeOutQuad))
+			synaptic.points.material.opacity = synapticAlpha * 0.9
 			if (synapticAlpha > 0.01) {
 				const posAttr = synaptic.geometry.attributes.position
 				for (let i = 0; i < synaptic.count; i++) {
 					const t = (i / synaptic.count + elapsedTime * 0.35) % 1.0
 					const px = lerp(finalAiX + 0.3, finalHuX - 0.3, t)
-					const py = -0.15 + Math.sin(t * Math.PI) * 0.45 + Math.sin(elapsedTime * 3 + i) * 0.08
-					const pz = Math.cos(t * Math.PI) * 0.3 + Math.sin(elapsedTime * 2 + i * 2) * 0.06
+					const py = -0.12 + Math.sin(t * Math.PI) * 0.42 + Math.sin(elapsedTime * 3 + i) * 0.06
+					const pz = Math.cos(t * Math.PI) * 0.3 + Math.sin(elapsedTime * 2 + i * 2) * 0.05
 					posAttr.setXYZ(i, px, py, pz)
 				}
 				posAttr.needsUpdate = true
 			}
 
-			// Dynamic light tracking & mouse parallax
-			aiLight.position.x = finalAiX - 0.8 + smoothedMouse.x * 0.5
-			aiLight.position.y = 2.5 - smoothedMouse.y * 0.4
-			huLight.position.x = finalHuX + 0.8 + smoothedMouse.x * 0.5
-			huLight.position.y = 2.5 - smoothedMouse.y * 0.4
+			// Light tracking
+			aiLight.position.x = finalAiX - 0.8 + smoothedMouse.x * 0.4
+			aiLight.position.y = 2.5 - smoothedMouse.y * 0.3
+			huLight.position.x = finalHuX + 0.8 + smoothedMouse.x * 0.4
+			huLight.position.y = 2.5 - smoothedMouse.y * 0.3
 			seamLight.intensity = (1 - separation) * 12
 
 			// Camera subtle parallax & adaptive viewport distance
-			const baseCamZ = isMobile ? 6.6 : isTablet ? 5.7 : 5.0
-			const camZ = lerp(baseCamZ, baseCamZ + 0.35, separation)
-			camera.position.x = smoothedMouse.x * 0.22
-			camera.position.y = 0.22 - smoothedMouse.y * 0.16
+			const baseCamZ = isMobile ? 6.5 : isTablet ? 5.6 : 5.0
+			const camZ = lerp(baseCamZ, baseCamZ + 0.3, separation)
+			camera.position.x = smoothedMouse.x * 0.2
+			camera.position.y = 0.18 - smoothedMouse.y * 0.14
 			camera.position.z = camZ
-			camera.lookAt(smoothedMouse.x * 0.04, 0.12, 0)
+			camera.lookAt(smoothedMouse.x * 0.03, 0.10, 0)
 
-			// Ambient background star drift
-			stars.rotation.y = elapsedTime * 0.014
+			stars.rotation.y = elapsedTime * 0.012
 
 			renderer.render(scene, camera)
 		}
 
 		const onVisibilityChange = () => {
 			isTabHidden = document.hidden
-			if (!isTabHidden) {
-				lastTime = performance.now()
-			}
+			if (!isTabHidden) lastTime = performance.now()
 		}
 		document.addEventListener('visibilitychange', onVisibilityChange)
 
@@ -604,7 +568,6 @@ function HeroScene({ hudRefs, onReady, onScrollProgress }) {
 			document.removeEventListener('visibilitychange', onVisibilityChange)
 			window.removeEventListener('resize', resize)
 			window.removeEventListener('scroll', updateScrollTarget)
-			window.removeEventListener('resize', updateScrollTarget)
 			window.removeEventListener('mousemove', onMouseMove)
 			renderer.dispose()
 			stars.geometry.dispose()
@@ -616,40 +579,36 @@ function HeroScene({ hudRefs, onReady, onScrollProgress }) {
 			synaptic.geometry.dispose()
 			synaptic.points.material.dispose()
 		}
-	}, [hudRefs, onReady, onScrollProgress])
+	}, [containerRef, hudRefs, onReady])
 
 	return <canvas ref={canvasRef} className="cover-page__canvas" aria-hidden="true" />
 }
 
+// ── Main Hero Pinned Section ─────────────────────────────────────────
 export default function Hero() {
+	const heroContainerRef = useRef(null)
 	const progressBarRef = useRef(null)
 	const coverOverlayRef = useRef(null)
+	const encounterOverlayRef = useRef(null)
 	const panelLeftRef = useRef(null)
 	const panelRightRef = useRef(null)
 	const hintRef = useRef(null)
-	const chapterIdeaRef = useRef(null)
-	const chapterExperienceRef = useRef(null)
-	const chapterAboutRef = useRef(null)
 
-	const hudRefs = useRef({
+	const [hudRefs] = useState(() => ({
 		progressBar: progressBarRef,
 		coverOverlay: coverOverlayRef,
+		encounterOverlay: encounterOverlayRef,
 		panelLeft: panelLeftRef,
 		panelRight: panelRightRef,
 		hint: hintRef,
-		chapterIdea: chapterIdeaRef,
-		chapterExperience: chapterExperienceRef,
-		chapterAbout: chapterAboutRef,
-	}).current
+	}))
 
 	const [loaderVisible, setLoaderVisible] = useState(true)
 	const [mobileMenuOpen, setMobileMenuOpen] = useState(false)
-	const [activeSection, setActiveSection] = useState('REALM')
+	const [activeNav, setActiveNav] = useState('realm')
 
 	const handleReady = useCallback(() => {
-		window.setTimeout(() => {
-			setLoaderVisible(false)
-		}, 300)
+		window.setTimeout(() => setLoaderVisible(false), 300)
 	}, [])
 
 	useEffect(() => {
@@ -657,42 +616,53 @@ export default function Hero() {
 		return () => window.clearTimeout(timer)
 	}, [])
 
-	const handleScrollProgress = useCallback((p) => {
-		if (p < 0.24) {
-			setActiveSection('REALM')
-		} else if (p < 0.56) {
-			setActiveSection('IDEA')
-		} else if (p < 0.82) {
-			setActiveSection('EXPERIENCE')
-		} else {
-			setActiveSection('ABOUT')
-		}
-	}, [])
-
-	const handleNavClick = (targetRatio) => {
-		setMobileMenuOpen(false)
-		const maxScroll = Math.max(document.body.scrollHeight - window.innerHeight, 1)
-		window.scrollTo({
-			top: maxScroll * targetRatio,
-			behavior: 'smooth',
-		})
-	}
-
-	const handleExploreClick = () => {
-		handleNavClick(0.38)
-	}
-
-	// Close mobile menu on Escape key
+	// Track active section for top navigation
 	useEffect(() => {
-		const handleKeyDown = (e) => {
-			if (e.key === 'Escape') setMobileMenuOpen(false)
+		const handleScroll = () => {
+			const scrollY = window.scrollY
+			const ideaEl = document.getElementById('idea')
+			const hiwEl = document.getElementById('how-it-works')
+			const agentsEl = document.getElementById('agents')
+			const hwEl = document.getElementById('human-world')
+			const piEl = document.getElementById('project-info')
+
+			if (piEl && scrollY >= piEl.offsetTop - 300) {
+				setActiveNav('project-info')
+			} else if (hwEl && scrollY >= hwEl.offsetTop - 300) {
+				setActiveNav('human-world')
+			} else if (agentsEl && scrollY >= agentsEl.offsetTop - 300) {
+				setActiveNav('agents')
+			} else if (hiwEl && scrollY >= hiwEl.offsetTop - 300) {
+				setActiveNav('how-it-works')
+			} else if (ideaEl && scrollY >= ideaEl.offsetTop - 300) {
+				setActiveNav('idea')
+			} else {
+				setActiveNav('realm')
+			}
 		}
-		window.addEventListener('keydown', handleKeyDown)
-		return () => window.removeEventListener('keydown', handleKeyDown)
+
+		window.addEventListener('scroll', handleScroll, { passive: true })
+		return () => window.removeEventListener('scroll', handleScroll)
 	}, [])
+
+	const scrollToSection = (id) => {
+		setMobileMenuOpen(false)
+		if (id === 'realm') {
+			window.scrollTo({ top: 0, behavior: 'smooth' })
+			return
+		}
+		const el = document.getElementById(id)
+		if (el) el.scrollIntoView({ behavior: 'smooth' })
+	}
+
+	const handleEnterRealmClick = () => {
+		// Scroll halfway down hero or directly to idea
+		const el = document.getElementById('idea')
+		if (el) el.scrollIntoView({ behavior: 'smooth' })
+	}
 
 	return (
-		<section className="cover-page" aria-label="AITIZEN REALM Digital Experience">
+		<section ref={heroContainerRef} className="cover-page" aria-label="AITIZEN REALM Digital Experience">
 			{/* Loading Screen */}
 			<div
 				className="cover-page__loader"
@@ -708,7 +678,7 @@ export default function Hero() {
 				<div className="cover-page__loaderBar">
 					<div className="cover-page__loaderFill" />
 				</div>
-				<div className="cover-page__loaderSub">SYNCHRONIZING NEURAL ARCHITECTURE</div>
+				<div className="cover-page__loaderSub">SYNCHRONIZING EMBODIED 3D COGNITION</div>
 			</div>
 
 			{/* Background Ambience */}
@@ -720,12 +690,12 @@ export default function Hero() {
 				<header className="cover-nav">
 					<div
 						className="cover-nav__brand"
-						onClick={() => handleNavClick(0)}
+						onClick={() => scrollToSection('realm')}
 						role="button"
 						tabIndex={0}
 						aria-label="AITIZEN REALM Home"
 						onKeyDown={(e) => {
-							if (e.key === 'Enter' || e.key === ' ') handleNavClick(0)
+							if (e.key === 'Enter' || e.key === ' ') scrollToSection('realm')
 						}}
 					>
 						<span className="cover-nav__logoOrb" aria-hidden="true" />
@@ -739,35 +709,45 @@ export default function Hero() {
 					<nav className="cover-nav__links" aria-label="Primary Navigation">
 						<button
 							type="button"
-							className={`cover-nav__link ${activeSection === 'REALM' ? 'cover-nav__link--active' : ''}`}
-							onClick={() => handleNavClick(0)}
-							aria-current={activeSection === 'REALM' ? 'true' : undefined}
+							className={`cover-nav__link ${activeNav === 'realm' ? 'cover-nav__link--active' : ''}`}
+							onClick={() => scrollToSection('realm')}
 						>
 							REALM
 						</button>
 						<button
 							type="button"
-							className={`cover-nav__link ${activeSection === 'IDEA' ? 'cover-nav__link--active' : ''}`}
-							onClick={() => handleNavClick(0.38)}
-							aria-current={activeSection === 'IDEA' ? 'true' : undefined}
+							className={`cover-nav__link ${activeNav === 'idea' ? 'cover-nav__link--active' : ''}`}
+							onClick={() => scrollToSection('idea')}
 						>
-							IDEA
+							THE IDEA
 						</button>
 						<button
 							type="button"
-							className={`cover-nav__link ${activeSection === 'EXPERIENCE' ? 'cover-nav__link--active' : ''}`}
-							onClick={() => handleNavClick(0.68)}
-							aria-current={activeSection === 'EXPERIENCE' ? 'true' : undefined}
+							className={`cover-nav__link ${activeNav === 'how-it-works' ? 'cover-nav__link--active' : ''}`}
+							onClick={() => scrollToSection('how-it-works')}
 						>
-							EXPERIENCE
+							HOW IT WORKS
 						</button>
 						<button
 							type="button"
-							className={`cover-nav__link ${activeSection === 'ABOUT' ? 'cover-nav__link--active' : ''}`}
-							onClick={() => handleNavClick(0.95)}
-							aria-current={activeSection === 'ABOUT' ? 'true' : undefined}
+							className={`cover-nav__link ${activeNav === 'agents' ? 'cover-nav__link--active' : ''}`}
+							onClick={() => scrollToSection('agents')}
 						>
-							ABOUT
+							AI AGENTS
+						</button>
+						<button
+							type="button"
+							className={`cover-nav__link ${activeNav === 'human-world' ? 'cover-nav__link--active' : ''}`}
+							onClick={() => scrollToSection('human-world')}
+						>
+							HUMAN WORLD
+						</button>
+						<button
+							type="button"
+							className={`cover-nav__link ${activeNav === 'project-info' ? 'cover-nav__link--active' : ''}`}
+							onClick={() => scrollToSection('project-info')}
+						>
+							PROJECT INFO
 						</button>
 					</nav>
 
@@ -794,46 +774,38 @@ export default function Hero() {
 						<span className="cover-nav__drawerBadge">NAVIGATION MENU</span>
 					</div>
 					<nav className="cover-nav__drawerList">
-						<button
-							type="button"
-							className={`cover-nav__drawerItem ${activeSection === 'REALM' ? 'cover-nav__drawerItem--active' : ''}`}
-							onClick={() => handleNavClick(0)}
-						>
+						<button type="button" className="cover-nav__drawerItem" onClick={() => scrollToSection('realm')}>
 							<span className="cover-nav__drawerNum">01</span>
-							<span>REALM</span>
+							<span>REALM (HERO)</span>
 						</button>
-						<button
-							type="button"
-							className={`cover-nav__drawerItem ${activeSection === 'IDEA' ? 'cover-nav__drawerItem--active' : ''}`}
-							onClick={() => handleNavClick(0.38)}
-						>
+						<button type="button" className="cover-nav__drawerItem" onClick={() => scrollToSection('idea')}>
 							<span className="cover-nav__drawerNum">02</span>
-							<span>IDEA</span>
+							<span>THE IDEA</span>
 						</button>
-						<button
-							type="button"
-							className={`cover-nav__drawerItem ${activeSection === 'EXPERIENCE' ? 'cover-nav__drawerItem--active' : ''}`}
-							onClick={() => handleNavClick(0.68)}
-						>
+						<button type="button" className="cover-nav__drawerItem" onClick={() => scrollToSection('how-it-works')}>
 							<span className="cover-nav__drawerNum">03</span>
-							<span>EXPERIENCE</span>
+							<span>HOW IT WORKS</span>
 						</button>
-						<button
-							type="button"
-							className={`cover-nav__drawerItem ${activeSection === 'ABOUT' ? 'cover-nav__drawerItem--active' : ''}`}
-							onClick={() => handleNavClick(0.95)}
-						>
+						<button type="button" className="cover-nav__drawerItem" onClick={() => scrollToSection('agents')}>
 							<span className="cover-nav__drawerNum">04</span>
-							<span>ABOUT</span>
+							<span>AI AGENTS</span>
+						</button>
+						<button type="button" className="cover-nav__drawerItem" onClick={() => scrollToSection('human-world')}>
+							<span className="cover-nav__drawerNum">05</span>
+							<span>HUMAN WORLD</span>
+						</button>
+						<button type="button" className="cover-nav__drawerItem" onClick={() => scrollToSection('project-info')}>
+							<span className="cover-nav__drawerNum">06</span>
+							<span>PROJECT INFO</span>
 						</button>
 					</nav>
 					<div className="cover-nav__drawerFooter">
-						<span>AITIZEN REALM ◈ NEURAL INTERFACE</span>
+						<span>AITIZEN REALM — NEURAL INTERFACE</span>
 					</div>
 				</div>
 
 				{/* 3D WebGL Canvas */}
-				<HeroScene hudRefs={hudRefs} onReady={handleReady} onScrollProgress={handleScrollProgress} />
+				<HeroScene containerRef={heroContainerRef} hudRefs={hudRefs} onReady={handleReady} />
 
 				{/* Interactive HUD Overlay */}
 				<div className="cover-page__hud">
@@ -842,40 +814,56 @@ export default function Hero() {
 						<span ref={progressBarRef} style={{ width: '0%' }} />
 					</div>
 
-					{/* ── CHAPTER 1: HERO COVER (One Mind. Infinite Possibilities.) ── */}
-					<div
-						ref={coverOverlayRef}
-						className="cover-hero"
-						style={{
-							opacity: 1,
-							transform: 'translate(-50%, -50%)',
-							pointerEvents: 'auto',
-						}}
-					>
+					{/* ── CHAPTER 1: INITIAL HERO COVER ─────────────────── */}
+					<div ref={coverOverlayRef} className="cover-hero">
 						<div className="cover-hero__badge">
 							<span className="cover-hero__badgeDot" />
-							<span>EXP.01 // SYMBIOTIC CONSCIOUSNESS</span>
+							<span>FINAL YEAR PROJECT // AITIZEN REALM</span>
 						</div>
 
 						<h1 className="cover-hero__title">
-							<span className="cover-hero__titlePrimary">ONE MIND.</span>
-							<span className="cover-hero__titleAccent">INFINITE</span>
-							<span className="cover-hero__titleGradient">POSSIBILITIES.</span>
+							<span className="cover-hero__titleEyebrow">AI AGENTS IN</span>
+							<span className="cover-hero__titleMain">THE REAL WORLD.</span>
 						</h1>
 
 						<p className="cover-hero__subtitle">
-							Where human imagination meets artificial intelligence.
+							Autonomous intelligence that learns, adapts, and acts within everyday human life.
 						</p>
 
+						<div className="cover-hero__actions">
+							<button
+								type="button"
+								className="cover-hero__btn"
+								onClick={handleEnterRealmClick}
+								aria-label="Enter the Realm"
+							>
+								<span className="cover-hero__btnGlow" aria-hidden="true" />
+								<span className="cover-hero__btnText">ENTER THE REALM</span>
+								<span className="cover-hero__btnArrow" aria-hidden="true">→</span>
+							</button>
+						</div>
+					</div>
+
+					{/* ── CHAPTER 1.5: FACE-TO-FACE ENCOUNTER BANNER ───── */}
+					<div ref={encounterOverlayRef} className="cover-encounter" style={{ opacity: 0 }}>
+						<div className="encounter-badge">
+							<span className="encounter-badge-dot" />
+							<span>EXP. 01 // THE SYMBIOSIS</span>
+						</div>
+						<h2 className="encounter-title">
+							TWO ENTITIES.<br />
+							<span className="encounter-gradient">ONE SHARED WORLD.</span>
+						</h2>
+						<p className="encounter-subtitle">
+							Where synthetic cognition steps into the human lifeworld—not to compete, but to co-exist.
+						</p>
 						<button
 							type="button"
-							className="cover-hero__btn"
-							onClick={handleExploreClick}
-							aria-label="Explore the Realm"
+							className="encounter-scroll-cue"
+							onClick={handleEnterRealmClick}
 						>
-							<span className="cover-hero__btnGlow" aria-hidden="true" />
-							<span className="cover-hero__btnText">EXPLORE THE REALM</span>
-							<span className="cover-hero__btnArrow" aria-hidden="true">→</span>
+							<span>CONTINUE SCROLLING TO EXPLORE ARCHITECTURE</span>
+							<span className="cue-arrow">↓</span>
 						</button>
 					</div>
 
@@ -895,177 +883,43 @@ export default function Hero() {
 
 					{/* Split HUD Tactical Labels */}
 					<div ref={panelLeftRef} className="cover-page__panel cover-page__panel--left" style={{ opacity: 0 }}>
-						<div className="cover-page__panelLabel">◈ SYNTHETIC ENTITY</div>
-						<div className="cover-page__panelLine">TYPE ▸ ARTIFICIAL INTELLIGENCE</div>
-						<div className="cover-page__panelLine">UNIT ▸ AI-v4.7 / NEURAL CORE</div>
+						<div className="cover-page__panelLabel">● SYNTHETIC ENTITY</div>
+						<div className="cover-page__panelLine">TYPE // ARTIFICIAL INTELLIGENCE</div>
+						<div className="cover-page__panelLine">UNIT // AI-v4.7 / NEURAL CORE</div>
 						<div className="cover-page__panelLine">
-							STATUS ▸ <span style={{ color: 'var(--ai)' }}>AUTONOMOUS</span>
+							STATUS // <span style={{ color: 'var(--ai)' }}>AUTONOMOUS</span>
 						</div>
-						<div className="cover-page__panelLine">LOGIC ▸ NON-LINEAR SYNAPSE</div>
+						<div className="cover-page__panelLine">LOGIC // NON-LINEAR SYNAPSE</div>
 						<div className="cover-page__panelDot" />
 					</div>
 
 					<div ref={panelRightRef} className="cover-page__panel cover-page__panel--right" style={{ opacity: 0 }}>
-						<div className="cover-page__panelLabel cover-page__panelLabel--warm">HOMO SAPIENS ◈</div>
-						<div className="cover-page__panelLine">BIOLOGICAL ◂ TYPE</div>
-						<div className="cover-page__panelLine">REAL WORLD ◂ ENVIRONMENT</div>
+						<div className="cover-page__panelLabel cover-page__panelLabel--warm">HOMO SAPIENS ●</div>
+						<div className="cover-page__panelLine">BIOLOGICAL // TYPE</div>
+						<div className="cover-page__panelLine">REAL WORLD // ENVIRONMENT</div>
 						<div className="cover-page__panelLine">
-							<span style={{ color: 'var(--hu)' }}>CONNECTED</span> ◂ STATUS
+							<span style={{ color: 'var(--hu)' }}>CONNECTED</span> // STATUS
 						</div>
-						<div className="cover-page__panelLine">INTUITION ◂ TRANSCENDENT</div>
+						<div className="cover-page__panelLine">INTUITION // TRANSCENDENT</div>
 						<div className="cover-page__panelDot cover-page__panelDot--warm" />
 					</div>
 
-					{/* ── CHAPTER 2: THE IDEA / CONVERGENCE ───────────────────────── */}
-					<div
-						ref={chapterIdeaRef}
-						className="cover-story cover-story--idea"
-						style={{
-							opacity: 0,
-							transform: 'translate(-50%, calc(-50% + 32px))',
-							pointerEvents: 'none',
-						}}
-					>
-						<div className="cover-story__chapterBadge">
-							<span>02 // THE CONVERGENCE</span>
-						</div>
-						<h2 className="cover-story__headline">
-							A SYNTHESIS OF<br />
-							<span className="cover-story__headlineGradient">TWO WORLDS</span>
-						</h2>
-						<p className="cover-story__body">
-							Neither replaces the other. In the Aitizen Realm, machine cognition magnifies human creativity
-							into uncharted dimensions—transforming solitary thought into boundless collective possibility.
-						</p>
-						<div className="cover-story__telemetry">
-							<div className="cover-story__telemetryItem">
-								<span className="cover-story__telemetryVal">&lt; 0.12ms</span>
-								<span className="cover-story__telemetryLabel">NEURAL LATENCY</span>
-							</div>
-							<div className="cover-story__telemetryDivider" />
-							<div className="cover-story__telemetryItem">
-								<span className="cover-story__telemetryVal">99.98%</span>
-								<span className="cover-story__telemetryLabel">SYNAPSE EFFICIENCY</span>
-							</div>
-							<div className="cover-story__telemetryDivider" />
-							<div className="cover-story__telemetryItem">
-								<span className="cover-story__telemetryVal">1 : 1</span>
-								<span className="cover-story__telemetryLabel">HARMONIC RATIO</span>
-							</div>
-						</div>
-					</div>
-
-					{/* ── CHAPTER 3: THE EXPERIENCE / ARCHITECTURE ────────────────── */}
-					<div
-						ref={chapterExperienceRef}
-						className="cover-story cover-story--experience"
-						style={{
-							opacity: 0,
-							transform: 'translate(-50%, calc(-50% + 32px))',
-							pointerEvents: 'none',
-						}}
-					>
-						<div className="cover-story__chapterBadge">
-							<span>03 // THE ARCHITECTURE</span>
-						</div>
-						<h2 className="cover-story__headline">
-							ENGINEERED FOR THE<br />
-							<span className="cover-story__headlineGradient">UNIMAGINED</span>
-						</h2>
-
-						<div className="cover-story__pillars">
-							<div className="cover-story__pillar">
-								<div className="cover-story__pillarNum">01</div>
-								<h3 className="cover-story__pillarTitle">AUTONOMOUS AGENTS</h3>
-								<p className="cover-story__pillarDesc">
-									Self-evolving intelligences with persistent context, reasoning across digital and physical domains.
-								</p>
-							</div>
-							<div className="cover-story__pillar">
-								<div className="cover-story__pillarNum">02</div>
-								<h3 className="cover-story__pillarTitle">SPATIAL REALMS</h3>
-								<p className="cover-story__pillarDesc">
-									Immersive 3D environments responsive to neural input and real-time human intent.
-								</p>
-							</div>
-							<div className="cover-story__pillar">
-								<div className="cover-story__pillarNum">03</div>
-								<h3 className="cover-story__pillarTitle">SYMBIOTIC CO-CREATION</h3>
-								<p className="cover-story__pillarDesc">
-									Direct translation pipelines bridging imagination and digital form instantaneously.
-								</p>
-							</div>
-						</div>
-					</div>
-
-					{/* ── CHAPTER 4: THE ABOUT / MANIFESTO ───────────────────────── */}
-					<div
-						ref={chapterAboutRef}
-						className="cover-story cover-story--about"
-						style={{
-							opacity: 0,
-							transform: 'translate(-50%, calc(-50% + 32px))',
-							pointerEvents: 'none',
-						}}
-					>
-						<div className="cover-story__chapterBadge">
-							<span>04 // THE MANIFESTO</span>
-						</div>
-						<h2 className="cover-story__headline">
-							THE DAWN OF<br />
-							<span className="cover-story__headlineGradient">DIGITAL EVOLUTION</span>
-						</h2>
-						<p className="cover-story__manifesto">
-							“We do not build machines to replace the human soul. We build realms where the human soul expands
-							through artificial intelligence.”
-						</p>
-
-						<div className="cover-story__actions">
-							<button
-								type="button"
-								className="cover-story__primaryBtn"
-								onClick={() => handleNavClick(0)}
-							>
-								<span>ENTER SIMULATION</span>
-								<span className="cover-story__btnIcon">⚡</span>
-							</button>
-							<button
-								type="button"
-								className="cover-story__secondaryBtn"
-								onClick={() => handleNavClick(0.38)}
-							>
-								<span>EXPLORE ARCHITECTURE</span>
-								<span>→</span>
-							</button>
-						</div>
-
-						{/* Futuristic Sub-footer Bar */}
-						<div className="cover-story__footer">
-							<span>© 2026 AITIZEN REALM. ALL RIGHTS RESERVED.</span>
-							<span className="cover-story__footerDivider">•</span>
-							<span>QUANTUM NODE 0x9F42</span>
-							<span className="cover-story__footerDivider">•</span>
-							<button
-								type="button"
-								className="cover-story__topBtn"
-								onClick={() => handleNavClick(0)}
-								aria-label="Return to top"
-							>
-								TOP ↑
-							</button>
-						</div>
-					</div>
-
 					{/* Minimal Scroll Indicator */}
-					<div ref={hintRef} className="cover-page__hint" onClick={handleExploreClick} style={{ opacity: 1 }}>
-						<span className="cover-page__hintLabel">SCROLL TO DISCOVER</span>
+					<button
+						type="button"
+						ref={hintRef}
+						className="cover-page__hint"
+						onClick={handleEnterRealmClick}
+						style={{ opacity: 1 }}
+						aria-label="Scroll to discover"
+					>
+						<span className="cover-page__hintLabel">SCROLL TO ENTER</span>
 						<div className="cover-page__hintTrack">
 							<span className="cover-page__hintBeam" />
 						</div>
-					</div>
+					</button>
 				</div>
 			</div>
 		</section>
 	)
 }
-

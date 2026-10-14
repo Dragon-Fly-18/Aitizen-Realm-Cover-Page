@@ -1,0 +1,187 @@
+/* ─────────────────────────────────────────────────────────────────────────────
+   FUTURE SECTION STYLES
+───────────────────────────────────────────────────────────────────────────── */
+
+.future-section {
+  position: relative;
+  padding: 160px 24px;
+  background: radial-gradient(ellipse 70% 60% at 50% 50%, rgba(0, 217, 255, 0.08) 0%, transparent 65%),
+              linear-gradient(180deg, #030711 0%, #060e22 50%, #030711 100%);
+  border-bottom: 1px solid rgba(255, 255, 255, 0.06);
+  text-align: center;
+  overflow: hidden;
+}
+
+.future-ambient-glow {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  width: 600px;
+  height: 600px;
+  background: radial-gradient(circle, rgba(143, 101, 255, 0.12) 0%, rgba(0, 217, 255, 0.08) 40%, transparent 70%);
+  filter: blur(40px);
+  pointer-events: none;
+}
+
+.future-content {
+  position: relative;
+  z-index: 2;
+  max-width: 960px;
+  margin: 0 auto;
+}
+
+.future-badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  padding: 6px 16px;
+  border-radius: var(--radius-pill);
+  background: rgba(0, 217, 255, 0.08);
+  border: 1px solid rgba(0, 217, 255, 0.3);
+  font-family: var(--mono);
+  font-size: 0.72rem;
+  letter-spacing: 0.22em;
+  color: var(--ai);
+  margin-bottom: 36px;
+}
+
+.future-statement {
+  margin: 0 0 54px 0;
+  padding: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.statement-line {
+  font-family: var(--display);
+  font-size: clamp(2.2rem, 5vw, 4.4rem);
+  font-weight: 900;
+  line-height: 1.08;
+  letter-spacing: 0.02em;
+  text-transform: uppercase;
+  color: #ffffff;
+}
+
+.statement-line--dim {
+  color: rgba(255, 255, 255, 0.38);
+}
+
+.statement-line--gradient {
+  background: linear-gradient(135deg, #00d9ff 0%, #b28eff 45%, #ffd29e 100%);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  text-shadow: 0 0 40px rgba(0, 217, 255, 0.3);
+}
+
+.future-brand-banner {
+  background: rgba(8, 16, 32, 0.7);
+  border: 1px solid rgba(0, 217, 255, 0.25);
+  border-radius: 20px;
+  padding: 40px;
+  backdrop-filter: blur(14px);
+  margin-bottom: 44px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 16px;
+  box-shadow: 0 20px 45px rgba(0, 0, 0, 0.4);
+}
+
+.brand-logo-ring {
+  width: 48px;
+  height: 48px;
+  border-radius: 50%;
+  border: 2px solid rgba(0, 217, 255, 0.4);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  box-shadow: 0 0 20px rgba(0, 217, 255, 0.3);
+}
+
+.brand-orb {
+  width: 18px;
+  height: 18px;
+  border-radius: 50%;
+  background: radial-gradient(circle, #ffffff 10%, #00d9ff 60%, #8f65ff 100%);
+  box-shadow: 0 0 16px var(--ai);
+  animation: pulseDot 2.4s infinite;
+}
+
+.future-realm-title {
+  font-family: var(--display);
+  font-size: 1.6rem;
+  font-weight: 800;
+  letter-spacing: 0.22em;
+  color: #ffffff;
+  margin: 0;
+}
+
+.future-tagline {
+  font-size: 1.15rem;
+  font-style: italic;
+  line-height: 1.6;
+  color: rgba(220, 235, 255, 0.85);
+  margin: 0;
+  max-width: 680px;
+}
+
+.future-actions {
+  display: flex;
+  justify-content: center;
+  gap: 16px;
+  flex-wrap: wrap;
+}
+
+.future-btn-primary {
+  background: linear-gradient(135deg, rgba(0, 217, 255, 0.25) 0%, rgba(143, 101, 255, 0.25) 100%);
+  border: 1px solid var(--ai);
+  color: #ffffff;
+  padding: 16px 32px;
+  border-radius: 30px;
+  font-family: var(--display);
+  font-size: 0.82rem;
+  font-weight: 700;
+  letter-spacing: 0.16em;
+  display: inline-flex;
+  align-items: center;
+  gap: 12px;
+  cursor: pointer;
+  transition: all 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+  box-shadow: 0 0 24px rgba(0, 217, 255, 0.25);
+}
+
+.future-btn-primary:hover {
+  background: linear-gradient(135deg, rgba(0, 217, 255, 0.4) 0%, rgba(143, 101, 255, 0.4) 100%);
+  box-shadow: 0 0 35px rgba(0, 217, 255, 0.45);
+  transform: translateY(-2px);
+}
+
+.future-btn-secondary {
+  background: rgba(255, 255, 255, 0.05);
+  border: 1px solid rgba(255, 255, 255, 0.14);
+  color: rgba(255, 255, 255, 0.8);
+  padding: 16px 28px;
+  border-radius: 30px;
+  font-family: var(--display);
+  font-size: 0.82rem;
+  font-weight: 700;
+  letter-spacing: 0.16em;
+  display: inline-flex;
+  align-items: center;
+  gap: 12px;
+  cursor: pointer;
+  transition: all 0.3s ease;
+}
+
+.future-btn-secondary:hover {
+  background: rgba(255, 255, 255, 0.12);
+  border-color: rgba(255, 255, 255, 0.35);
+  color: #ffffff;
+  transform: translateY(-2px);
+}
+
+.btn-arrow {
+  font-size: 1rem;
+}
