@@ -700,7 +700,7 @@ export default function Hero() {
 	}
 
 	const handleObserverClick = () => {
-		scrollToSection('agents')
+		window.location.assign('https://aitizen-realm-observer.netlify.app/')
 	}
 
 	const handleExploreClick = () => {
