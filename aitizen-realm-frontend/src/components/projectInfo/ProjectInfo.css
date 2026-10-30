@@ -5,9 +5,9 @@
 .pi-section {
   position: relative;
   padding: 120px 24px 40px 24px;
-  background: radial-gradient(circle at 50% 90%, rgba(0, 217, 255, 0.06) 0%, transparent 60%),
-              linear-gradient(180deg, #030711 0%, #040916 100%);
-  border-top: 1px solid rgba(0, 217, 255, 0.15);
+  background: radial-gradient(circle at 50% 90%, rgba(201, 181, 142, 0.06) 0%, transparent 60%),
+              linear-gradient(180deg, #080909 0%, #0c100d 100%);
+  border-top: 1px solid rgba(201, 181, 142, 0.15);
   overflow: hidden;
 }
 
@@ -19,8 +19,8 @@
 }
 
 .pi-card {
-  background: rgba(8, 16, 32, 0.75);
-  border: 1px solid rgba(255, 255, 255, 0.08);
+  background: rgba(18, 21, 18, 0.75);
+  border: 1px solid rgba(241, 240, 233, 0.08);
   border-radius: 16px;
   padding: 32px;
   backdrop-filter: blur(14px);
@@ -31,7 +31,7 @@
   justify-content: space-between;
   align-items: center;
   margin-bottom: 24px;
-  border-bottom: 1px solid rgba(255, 255, 255, 0.07);
+  border-bottom: 1px solid rgba(241, 240, 233, 0.07);
   padding-bottom: 14px;
 }
 
@@ -54,7 +54,7 @@
   font-family: var(--mono);
   font-size: 0.65rem;
   letter-spacing: 0.14em;
-  color: rgba(255, 255, 255, 0.45);
+  color: rgba(241, 240, 233, 0.45);
 }
 
 /* ── Specifications List ────────────────────────────────────────────── */
@@ -70,7 +70,7 @@
   align-items: center;
   font-size: 0.92rem;
   padding-bottom: 12px;
-  border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+  border-bottom: 1px solid rgba(241, 240, 233, 0.05);
 }
 
 .pi-spec-row:last-child {
@@ -82,14 +82,14 @@
   font-family: var(--mono);
   font-size: 0.72rem;
   letter-spacing: 0.12em;
-  color: rgba(255, 255, 255, 0.5);
+  color: rgba(241, 240, 233, 0.5);
 }
 
 .pi-spec-val {
   font-family: var(--display);
   font-size: 0.92rem;
   font-weight: 600;
-  color: #ffffff;
+  color: #f1f0e9;
 }
 
 .pi-spec-val.highlight {
@@ -109,8 +109,8 @@
   display: flex;
   align-items: center;
   gap: 16px;
-  background: rgba(4, 9, 20, 0.55);
-  border: 1px solid rgba(255, 255, 255, 0.06);
+  background: rgba(9, 12, 10, 0.55);
+  border: 1px solid rgba(241, 240, 233, 0.06);
   border-radius: 10px;
   padding: 12px 16px;
 }
@@ -119,8 +119,8 @@
   width: 36px;
   height: 36px;
   border-radius: 50%;
-  background: rgba(0, 217, 255, 0.1);
-  border: 1px solid rgba(0, 217, 255, 0.35);
+  background: rgba(201, 181, 142, 0.1);
+  border: 1px solid rgba(201, 181, 142, 0.35);
   color: var(--ai);
   font-family: var(--mono);
   font-size: 0.72rem;
@@ -141,19 +141,19 @@
   font-family: var(--display);
   font-size: 0.82rem;
   font-weight: 700;
-  color: #ffffff;
+  color: #f1f0e9;
   letter-spacing: 0.04em;
 }
 
 .member-role {
   font-size: 0.75rem;
-  color: rgba(200, 220, 245, 0.65);
+  color: rgba(210, 212, 202, 0.65);
 }
 
 /* ── Technology Box ─────────────────────────────────────────────────── */
 .pi-tech-box {
-  background: rgba(8, 16, 32, 0.7);
-  border: 1px solid rgba(0, 217, 255, 0.2);
+  background: rgba(18, 21, 18, 0.7);
+  border: 1px solid rgba(201, 181, 142, 0.2);
   border-radius: 16px;
   padding: 28px 32px;
   margin-bottom: 48px;
@@ -176,7 +176,7 @@
 .tech-box-count {
   font-family: var(--mono);
   font-size: 0.65rem;
-  color: rgba(255, 255, 255, 0.4);
+  color: rgba(241, 240, 233, 0.4);
 }
 
 .tech-chips-grid {
@@ -186,8 +186,8 @@
 }
 
 .tech-chip-card {
-  background: rgba(4, 8, 18, 0.7);
-  border: 1px solid rgba(255, 255, 255, 0.08);
+  background: rgba(9, 12, 10, 0.7);
+  border: 1px solid rgba(241, 240, 233, 0.08);
   border-radius: 10px;
   padding: 16px;
   display: flex;
@@ -197,7 +197,7 @@
 }
 
 .tech-chip-card:hover {
-  border-color: rgba(0, 217, 255, 0.4);
+  border-color: rgba(201, 181, 142, 0.4);
   transform: translateY(-2px);
 }
 
@@ -211,22 +211,22 @@
   font-family: var(--display);
   font-size: 0.85rem;
   font-weight: 700;
-  color: #ffffff;
+  color: #f1f0e9;
 }
 
 .tech-tag {
   font-family: var(--mono);
   font-size: 0.58rem;
   color: var(--ai);
-  background: rgba(0, 217, 255, 0.1);
+  background: rgba(201, 181, 142, 0.1);
   padding: 2px 7px;
   border-radius: 999px;
-  border: 1px solid rgba(0, 217, 255, 0.2);
+  border: 1px solid rgba(201, 181, 142, 0.2);
 }
 
 .tech-role {
   font-size: 0.75rem;
-  color: rgba(200, 215, 240, 0.65);
+  color: rgba(210, 212, 202, 0.65);
   line-height: 1.45;
 }
 
@@ -235,7 +235,7 @@
   display: flex;
   justify-content: space-between;
   align-items: center;
-  border-top: 1px solid rgba(255, 255, 255, 0.08);
+  border-top: 1px solid rgba(241, 240, 233, 0.08);
   padding-top: 28px;
   flex-wrap: wrap;
   gap: 16px;
@@ -253,25 +253,25 @@
   font-size: 0.88rem;
   font-weight: 800;
   letter-spacing: 0.2em;
-  color: #ffffff;
+  color: #f1f0e9;
 }
 
 .footer-copyright {
   font-family: var(--mono);
   font-size: 0.65rem;
-  color: rgba(255, 255, 255, 0.4);
+  color: rgba(241, 240, 233, 0.4);
 }
 
 .footer-center {
   font-family: var(--mono);
   font-size: 0.65rem;
   letter-spacing: 0.16em;
-  color: rgba(0, 217, 255, 0.7);
+  color: rgba(201, 181, 142, 0.7);
 }
 
 .footer-top-btn {
-  background: rgba(0, 217, 255, 0.08);
-  border: 1px solid rgba(0, 217, 255, 0.3);
+  background: rgba(201, 181, 142, 0.08);
+  border: 1px solid rgba(201, 181, 142, 0.3);
   color: var(--ai);
   padding: 8px 16px;
   border-radius: 20px;
@@ -286,9 +286,9 @@
 }
 
 .footer-top-btn:hover {
-  background: rgba(0, 217, 255, 0.2);
+  background: rgba(201, 181, 142, 0.2);
   border-color: var(--ai);
-  box-shadow: 0 0 16px rgba(0, 217, 255, 0.3);
+  box-shadow: 0 0 16px rgba(201, 181, 142, 0.3);
 }
 
 .top-arrow {

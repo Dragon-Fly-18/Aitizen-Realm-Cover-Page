@@ -1,3 +1,4 @@
+import SectionMotion from '../sectionMotion/SectionMotion'
 import './ProjectInfo.css'
 
 const TECH_STACK = [
@@ -29,6 +30,7 @@ export default function ProjectInfo() {
           <p className="section-description">
             Academic engineering documentation, technical specifications, and team credentials for AITIZEN REALM.
           </p>
+          <SectionMotion variant="dossier" />
         </div>
 
         {/* Project Metadata Grid */}

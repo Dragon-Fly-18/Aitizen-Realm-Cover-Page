@@ -1,0 +1,98 @@
+/* A dedicated art area keeps moving geometry away from text and controls. */
+.section-header:has(> .chapter-visual) {
+  display: grid;
+  grid-template-columns: minmax(0, 1.12fr) minmax(0, 1fr);
+  grid-template-rows: auto auto 1fr;
+  column-gap: clamp(24px, 5vw, 72px);
+  max-width: 1200px;
+  text-align: left;
+  align-items: start;
+}
+
+.section-header:has(> .chapter-visual) > :not(.chapter-visual) { grid-column: 1; }
+.section-header:has(> .chapter-visual) > .section-badge { align-self: end; margin-top: 34px; }
+.section-header:has(> .chapter-visual) > .section-title { text-wrap: balance; }
+.section-header:has(> .chapter-visual) > .section-description { padding-bottom: 30px; }
+
+.chapter-visual {
+  position: relative;
+  grid-column: 2;
+  grid-row: 1 / 4;
+  align-self: stretch;
+  min-width: 0;
+  min-height: 360px;
+  overflow: hidden;
+  pointer-events: none;
+  background: radial-gradient(ellipse at 50% 52%, #c9b58e0c, transparent 67%);
+}
+
+/* Alternate the framing, as in the reference's changing camera compositions. */
+.section-header:has(> :is(.chapter-visual--pipeline, .chapter-visual--contexts)) {
+  grid-template-columns: minmax(0, 1fr) minmax(0, 1.12fr);
+}
+.section-header:has(> :is(.chapter-visual--pipeline, .chapter-visual--contexts)) > :not(.chapter-visual) { grid-column: 2; }
+.section-header > :is(.chapter-visual--pipeline, .chapter-visual--contexts) { grid-column: 1; }
+
+.chapter-visual__horizon {
+  position: absolute;
+  bottom: 12%;
+  left: 8%;
+  width: 84%;
+  height: 1px;
+  background: linear-gradient(90deg, transparent, #c9b58e38, transparent);
+}
+
+.chapter-visual__fallback {
+  position: absolute;
+  inset: 20% 25%;
+  border: 1px solid #c9b58e45;
+  border-radius: 50%;
+  background: radial-gradient(circle at 32% 28%, #44483e, #101310 52%, #c9b58e44 99%);
+  box-shadow: 0 20px 60px #0006;
+}
+.chapter-visual__fallback i { position: absolute; inset: -12%; border: 1px solid #c9b58e33; border-radius: 50%; transform: rotateX(65deg) rotate(-25deg); }
+.chapter-visual__fallback i:nth-child(2) { transform: rotateY(65deg) rotate(25deg); }
+.chapter-visual__fallback i:nth-child(3) { inset: -24%; transform: rotateX(75deg) rotate(50deg); }
+.chapter-visual[data-rendered] .chapter-visual__fallback { visibility: hidden; }
+
+/* One transparent, scissored canvas serves all seven art areas. */
+.chapter-motion-canvas {
+  position: fixed;
+  inset: 0;
+  display: block;
+  width: 100%;
+  height: 100%;
+  z-index: 3;
+  pointer-events: none;
+}
+
+.future-content:has(> .chapter-visual) {
+  display: grid;
+  grid-template-columns: minmax(0, 1.35fr) minmax(0, 1fr);
+  column-gap: 36px;
+  max-width: 1200px;
+  text-align: left;
+}
+.future-content:has(> .chapter-visual) > .future-badge { grid-column: 1; }
+.future-content:has(> .chapter-visual) > .future-statement { grid-column: 1; }
+.future-content > .chapter-visual { grid-row: 1 / 3; min-height: 440px; }
+.future-content:has(> .chapter-visual) > :is(.future-brand-banner, .future-actions) { grid-column: 1 / -1; text-align: center; }
+
+@media (max-width: 900px) {
+  .section-header:has(> .chapter-visual),
+  .section-header:has(> :is(.chapter-visual--pipeline, .chapter-visual--contexts)),
+  .future-content:has(> .chapter-visual) {
+    grid-template-columns: minmax(0, 1fr);
+    text-align: center;
+    column-gap: 0;
+  }
+  .section-header:has(> .chapter-visual) > :not(.chapter-visual),
+  .section-header:has(> :is(.chapter-visual--pipeline, .chapter-visual--contexts)) > :not(.chapter-visual) { grid-column: 1; }
+  .section-header:has(> .chapter-visual) > .section-badge { margin-top: 0; justify-self: center; }
+  .section-header:has(> .chapter-visual) > .section-description { padding-bottom: 0; }
+  .section-header > .chapter-visual,
+  .future-content > .chapter-visual { grid-column: 1; grid-row: auto; height: clamp(260px, 60vw, 360px); min-height: 0; margin-top: 12px; }
+  .future-content:has(> .chapter-visual) > .future-badge { justify-self: center; }
+  .future-content:has(> .chapter-visual) > .future-statement { margin-bottom: 0; }
+  .future-content > .chapter-visual { margin-bottom: 36px; }
+}

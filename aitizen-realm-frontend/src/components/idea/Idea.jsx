@@ -1,3 +1,4 @@
+import SectionMotion from '../sectionMotion/SectionMotion'
 import { useState } from 'react'
 import './Idea.css'
 
@@ -22,6 +23,7 @@ export default function Idea() {
             capable of actively perceiving their environment, reasoning over novel situations, and performing everyday
             human activities without every step being hardcoded.
           </p>
+          <SectionMotion variant="idea" />
         </div>
 
         {/* Tab Switcher */}

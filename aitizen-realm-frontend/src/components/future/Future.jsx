@@ -1,3 +1,4 @@
+import SectionMotion from '../sectionMotion/SectionMotion'
 import './Future.css'
 
 export default function Future() {
@@ -27,6 +28,7 @@ export default function Future() {
             IT IS ABOUT INTELLIGENCE WORKING WITH THE WORLD.
           </span>
         </blockquote>
+        <SectionMotion variant="vision" />
 
         <div className="future-brand-banner">
           <div className="brand-logo-ring">

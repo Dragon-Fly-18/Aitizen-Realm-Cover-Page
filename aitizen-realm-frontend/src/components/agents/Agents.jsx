@@ -1,3 +1,4 @@
+import SectionMotion from '../sectionMotion/SectionMotion'
 import { useState } from 'react'
 import './Agents.css'
 
@@ -122,6 +123,7 @@ export default function Agents() {
             Aitizen agents execute real-world tasks not as static pre-programmed scripts, but through continuous situational
             awareness, commonsense reasoning, and proactive everyday collaboration.
           </p>
+          <SectionMotion variant="agents" />
         </div>
 
         {/* Interactive Capability Showcase */}

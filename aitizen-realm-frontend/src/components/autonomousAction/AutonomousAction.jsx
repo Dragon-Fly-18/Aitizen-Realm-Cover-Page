@@ -1,3 +1,4 @@
+import SectionMotion from '../sectionMotion/SectionMotion'
 import { useState } from 'react'
 import './AutonomousAction.css'
 
@@ -69,6 +70,7 @@ export default function AutonomousAction() {
             The fundamental goal is transcending rigid predefined behavior toward agents that formulate and execute novel
             action paths dynamically when everyday reality defies static expectations.
           </p>
+          <SectionMotion variant="resilience" />
         </div>
 
         {/* Interactive Scenario Stress Tester */}

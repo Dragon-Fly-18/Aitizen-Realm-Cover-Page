@@ -2,3 +2,168 @@
   min-height: 100vh;
   background: transparent;
 }
+
+/* Carry the cover's material and typography treatment through the project.
+   Section grids, content, controls, and breakpoints remain in their components. */
+.app-shell > :is(.idea-section, .hiw-section, .agents-section, .hw-section, .aa-section, .future-section, .pi-section) {
+  background:
+    radial-gradient(ellipse at 75% 20%, rgba(201, 181, 142, 0.045), transparent 58%),
+    linear-gradient(180deg, #080909, #10120f 52%, #080909);
+  border-color: rgba(201, 181, 142, 0.13);
+  isolation: isolate;
+}
+
+.app-shell > :is(.idea-section, .hiw-section, .agents-section, .hw-section, .aa-section, .future-section, .pi-section)::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  z-index: -1;
+  pointer-events: none;
+  opacity: 0.3;
+  background-image:
+    radial-gradient(circle, #c9b58e66 0.7px, transparent 1px),
+    radial-gradient(circle, #a6b4a844 0.7px, transparent 1px);
+  background-size: 137px 149px, 211px 197px;
+  background-position: 24px 48px, 88px 12px;
+  mask-image: linear-gradient(180deg, transparent, #000 24%, #000 75%, transparent);
+}
+
+.app-shell .section-title {
+  font-size: clamp(2rem, 4.5vw, 4.3rem);
+  font-weight: 500;
+  line-height: 1.06;
+  letter-spacing: -0.055em;
+  color: var(--marble);
+}
+
+.app-shell :is(.text-gradient, .text-gradient-warm, .statement-line--gradient) {
+  background: none;
+  color: var(--gold);
+  -webkit-text-fill-color: currentColor;
+  text-shadow: none;
+}
+
+.app-shell .section-description {
+  color: var(--muted);
+  font-size: 1rem;
+  line-height: 1.75;
+}
+
+.app-shell :is(.section-badge, .future-badge) {
+  padding: 0;
+  border: 0;
+  border-radius: 0;
+  background: none;
+  font-size: 0.65rem;
+  letter-spacing: 0.17em;
+  color: var(--gold);
+}
+
+.app-shell :is(.card-title, .col-title, .showcase-title, .detail-headline, .hw-display-headline, .res-title, .phil-pillar h5) {
+  font-weight: 500;
+  letter-spacing: -0.025em;
+}
+
+.app-shell :is(.card-num, .stat-val, .pi-spec-val.highlight) {
+  font-weight: 500;
+  letter-spacing: -0.025em;
+}
+
+.app-shell :is(.idea-card, .comparison-col, .philosophy-card, .showcase-card, .agent-detail-card, .hw-display, .aa-stress-box, .pi-card, .pi-tech-box, .future-brand-banner) {
+  border-radius: 6px;
+  border-color: rgba(201, 181, 142, 0.2);
+  background: linear-gradient(145deg, rgba(26, 29, 24, 0.82), rgba(11, 14, 12, 0.94));
+  box-shadow: 0 20px 44px rgba(0, 0, 0, 0.2);
+  backdrop-filter: none;
+}
+
+.app-shell :is(.idea-card--primary, .comparison-col--aitizen) {
+  border-color: rgba(201, 181, 142, 0.42);
+  background: linear-gradient(145deg, rgba(39, 38, 28, 0.75), rgba(13, 16, 13, 0.96));
+}
+
+.app-shell .comparison-col--legacy { border-color: rgba(255, 80, 80, 0.2); }
+.app-shell .idea-card:hover { border-color: var(--gold); box-shadow: 0 20px 44px rgba(0, 0, 0, 0.35); }
+
+.app-shell :is(.showcase-detail, .behavior-box, .hw-highlight-box, .pi-member-slot, .tech-chip-card, .terminal-window, .res-log-box) {
+  border-radius: 4px;
+  background: rgba(7, 10, 8, 0.72);
+}
+
+.app-shell :is(.idea-tab, .activity-btn, .hw-nav-btn, .stress-btn, .stage-nav-btn, .footer-top-btn) {
+  border-radius: 3px;
+  background: rgba(18, 21, 18, 0.8);
+  font-weight: 500;
+  letter-spacing: 0.04em;
+  box-shadow: none;
+  backdrop-filter: none;
+}
+
+.app-shell :is(.idea-tab, .activity-btn, .hw-nav-btn, .stress-btn, .stage-nav-btn, .footer-top-btn):hover:not(:disabled) {
+  border-color: rgba(201, 181, 142, 0.65);
+  background: rgba(201, 181, 142, 0.08);
+  box-shadow: none;
+}
+
+.app-shell :is(.idea-tab.active, .activity-btn.selected, .hw-nav-btn.active, .stress-btn.active) {
+  color: var(--marble);
+  border-color: var(--gold);
+  background: linear-gradient(90deg, rgba(201, 181, 142, 0.14), rgba(18, 21, 18, 0.88));
+  box-shadow: inset 2px 0 var(--gold);
+}
+
+.app-shell :is(.activity-title, .hw-nav-title, .stress-btn-title, .node-label, .member-name, .tech-name) {
+  font-weight: 500;
+  letter-spacing: 0.02em;
+}
+
+.app-shell :is(.card-tag, .col-badge, .showcase-tag, .activity-focus-tag, .hw-display-tag, .subtle-chip, .tech-tag, .res-tag) {
+  border-radius: 2px;
+  letter-spacing: 0.1em;
+}
+
+.app-shell .pipeline-track { height: 1px; }
+.app-shell .pipeline-progress { background: var(--gold); box-shadow: 0 0 8px var(--ai-glow); }
+.app-shell .pipeline-node.current .node-circle {
+  background: linear-gradient(145deg, #39392d, #171d17);
+  box-shadow: 0 0 24px var(--ai-glow-soft), inset 0 0 12px var(--ai-glow-soft);
+}
+.app-shell .pipeline-node.current .node-label { text-shadow: none; }
+.app-shell .showcase-card::before { height: 1px; background: linear-gradient(90deg, transparent, var(--gold), transparent); }
+.app-shell .divider-icon { background: rgba(201, 181, 142, 0.08); box-shadow: none; }
+.app-shell :is(.badge-pulse, .telemetry-led, .status-blink, .hw-telemetry-dot, .pi-dot, .pill-dot) { box-shadow: 0 0 7px var(--ai-glow); }
+
+.app-shell .response-card { border-radius: 4px; }
+.app-shell .response-card--aitizen { background: linear-gradient(145deg, #24271e, #10150f); box-shadow: none; }
+.app-shell .terminal-header { background: #191d18; }
+.app-shell .terminal-line { color: #d9ccb0; }
+.app-shell .chip-value { color: #d9ccb0; }
+
+.app-shell .statement-line {
+  font-size: clamp(2.2rem, 5vw, 4.8rem);
+  font-weight: 500;
+  letter-spacing: -0.055em;
+  line-height: 1.06;
+}
+.app-shell .statement-line--dim { color: #90968b; }
+.app-shell .future-realm-title { font-weight: 500; letter-spacing: 0.14em; }
+.app-shell .brand-logo-ring { border-width: 1px; box-shadow: none; }
+.app-shell .brand-orb { background: radial-gradient(circle, #f1f0e9 10%, #c9b58e 60%, #747d6d 100%); box-shadow: 0 0 16px var(--ai-glow); }
+
+.app-shell :is(.future-btn-primary, .future-btn-secondary) {
+  border-radius: 3px;
+  font-weight: 500;
+  letter-spacing: 0.04em;
+  box-shadow: none;
+}
+.app-shell .future-btn-primary { background: #e1d5bd; color: #121610; border-color: #e1d5bd; }
+.app-shell .future-btn-primary:hover { background: var(--marble); border-color: var(--marble); box-shadow: none; }
+.app-shell .future-btn-secondary { background: transparent; border-color: rgba(201, 181, 142, 0.35); }
+.app-shell .future-btn-secondary:hover { background: rgba(201, 181, 142, 0.08); border-color: var(--gold); }
+.app-shell .footer-brand { font-weight: 500; letter-spacing: 0.18em; }
+
+@media (max-width: 600px) {
+  .app-shell .section-title { font-size: clamp(1.9rem, 7.5vw, 2.6rem); }
+  .app-shell .section-badge { font-size: 0.6rem; letter-spacing: 0.1em; }
+  .app-shell .section-description { font-size: 0.94rem; }
+}

@@ -1,3 +1,4 @@
+import SectionMotion from '../sectionMotion/SectionMotion'
 import { useState } from 'react'
 import './HumanWorld.css'
 
@@ -84,6 +85,7 @@ export default function HumanWorld() {
             Aitizen Realm does not exist in an abstract digital vacuum. Our agents are situated inside the rich, tactile,
             and diverse spaces of everyday human life.
           </p>
+          <SectionMotion variant="contexts" />
         </div>
 
         {/* Domain Explorer */}

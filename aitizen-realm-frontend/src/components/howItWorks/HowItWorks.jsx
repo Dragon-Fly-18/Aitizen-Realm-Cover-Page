@@ -1,3 +1,4 @@
+import SectionMotion from '../sectionMotion/SectionMotion'
 import { useState } from 'react'
 import './HowItWorks.css'
 
@@ -84,6 +85,7 @@ export default function HowItWorks() {
             Instead of executing hardcoded linear scripts, AITIZEN agents operate across a continuous feedback loop:
             transforming raw sensory observation into situated intelligence and adaptive physical action.
           </p>
+          <SectionMotion variant="pipeline" />
         </div>
 
         {/* Interactive Stepper Pipeline */}

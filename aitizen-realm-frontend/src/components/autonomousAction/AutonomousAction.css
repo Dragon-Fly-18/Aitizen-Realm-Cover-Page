@@ -5,19 +5,19 @@
 .aa-section {
   position: relative;
   padding: 120px 24px;
-  background: radial-gradient(circle at 50% 20%, rgba(0, 217, 255, 0.05) 0%, transparent 55%),
-              linear-gradient(180deg, #030711 0%, #050a16 50%, #030711 100%);
-  border-bottom: 1px solid rgba(255, 255, 255, 0.06);
+  background: radial-gradient(circle at 50% 20%, rgba(201, 181, 142, 0.05) 0%, transparent 55%),
+              linear-gradient(180deg, #080909 0%, #10120f 50%, #080909 100%);
+  border-bottom: 1px solid rgba(241, 240, 233, 0.06);
   overflow: hidden;
 }
 
 .aa-stress-box {
-  background: rgba(10, 18, 36, 0.85);
-  border: 1px solid rgba(0, 217, 255, 0.25);
+  background: rgba(20, 23, 20, 0.85);
+  border: 1px solid rgba(201, 181, 142, 0.25);
   border-radius: 20px;
   padding: 40px;
   backdrop-filter: blur(18px);
-  box-shadow: 0 20px 60px rgba(0, 0, 0, 0.5), 0 0 30px rgba(0, 217, 255, 0.07);
+  box-shadow: 0 20px 60px rgba(0, 0, 0, 0.5), 0 0 30px rgba(201, 181, 142, 0.07);
 }
 
 .stress-tabs {
@@ -29,7 +29,7 @@
   font-family: var(--mono);
   font-size: 0.68rem;
   letter-spacing: 0.2em;
-  color: rgba(255, 255, 255, 0.6);
+  color: rgba(241, 240, 233, 0.6);
   margin-bottom: 12px;
 }
 
@@ -40,8 +40,8 @@
 }
 
 .stress-btn {
-  background: rgba(16, 26, 48, 0.7);
-  border: 1px solid rgba(255, 255, 255, 0.1);
+  background: rgba(24, 27, 22, 0.7);
+  border: 1px solid rgba(241, 240, 233, 0.1);
   border-radius: 10px;
   padding: 12px 18px;
   display: flex;
@@ -53,14 +53,14 @@
 }
 
 .stress-btn:hover {
-  background: rgba(0, 217, 255, 0.1);
-  border-color: rgba(0, 217, 255, 0.35);
+  background: rgba(201, 181, 142, 0.1);
+  border-color: rgba(201, 181, 142, 0.35);
 }
 
 .stress-btn.active {
-  background: rgba(0, 217, 255, 0.18);
+  background: rgba(201, 181, 142, 0.18);
   border-color: var(--ai);
-  box-shadow: 0 0 16px rgba(0, 217, 255, 0.3);
+  box-shadow: 0 0 16px rgba(201, 181, 142, 0.3);
 }
 
 .stress-btn-num {
@@ -74,7 +74,7 @@
   font-family: var(--display);
   font-size: 0.82rem;
   font-weight: 700;
-  color: #ffffff;
+  color: #f1f0e9;
 }
 
 .incident-banner {
@@ -128,9 +128,9 @@
 }
 
 .response-card--aitizen {
-  background: linear-gradient(180deg, rgba(10, 28, 54, 0.85) 0%, rgba(6, 16, 32, 0.9) 100%);
-  border: 1px solid rgba(0, 217, 255, 0.4);
-  box-shadow: 0 10px 30px rgba(0, 217, 255, 0.12);
+  background: linear-gradient(180deg, rgba(26, 28, 22, 0.85) 0%, rgba(13, 16, 13, 0.9) 100%);
+  border: 1px solid rgba(201, 181, 142, 0.4);
+  box-shadow: 0 10px 30px rgba(201, 181, 142, 0.12);
 }
 
 .res-top {
@@ -154,9 +154,9 @@
 }
 
 .res-tag--cyan {
-  background: rgba(0, 217, 255, 0.12);
+  background: rgba(201, 181, 142, 0.12);
   color: var(--ai);
-  border: 1px solid rgba(0, 217, 255, 0.35);
+  border: 1px solid rgba(201, 181, 142, 0.35);
 }
 
 .res-state {
@@ -180,11 +180,11 @@
 }
 
 .res-title--cyan {
-  color: #ffffff;
+  color: #f1f0e9;
 }
 
 .res-log-box {
-  background: #02040a;
+  background: #060807;
   border: 1px solid rgba(255, 80, 80, 0.2);
   border-radius: 10px;
   padding: 16px;
@@ -196,29 +196,29 @@
 }
 
 .res-log-box--cyan {
-  border-color: rgba(0, 217, 255, 0.25);
-  color: #99eeff;
+  border-color: rgba(201, 181, 142, 0.25);
+  color: #e2d2b1;
 }
 
 .log-label {
   display: block;
   font-size: 0.62rem;
   letter-spacing: 0.18em;
-  color: rgba(255, 255, 255, 0.45);
+  color: rgba(241, 240, 233, 0.45);
   margin-bottom: 8px;
 }
 
 .log-label--cyan {
-  color: rgba(0, 217, 255, 0.75);
+  color: rgba(201, 181, 142, 0.75);
 }
 
 .res-outcome {
   font-size: 0.88rem;
   line-height: 1.55;
-  color: rgba(240, 245, 255, 0.85);
+  color: rgba(241, 240, 233, 0.85);
   margin: 0;
   padding-top: 8px;
-  border-top: 1px solid rgba(255, 255, 255, 0.08);
+  border-top: 1px solid rgba(241, 240, 233, 0.08);
 }
 
 /* Responsive */
